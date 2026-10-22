@@ -39,7 +39,7 @@ html,body{height:100%;background:var(--night);color:var(--pearl);overflow:hidden
 .pill:hover{background:rgba(255,198,218,.16);transform:translateY(-1px)}
 .pill.big{font-size:17px;padding:18px 34px;box-shadow:0 0 44px rgba(255,126,179,.38),inset 0 0 20px rgba(255,198,218,.12)}
 .link{pointer-events:auto;background:none;border:0;color:rgba(255,247,250,.62);font:400 14px Inter;margin-top:18px;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
-#intro{pointer-events:auto;background:radial-gradient(ellipse at 50% 55%,rgba(30,14,30,.45) 0%,rgba(7,6,11,.86) 72%);transition:opacity 1.3s}
+#intro{pointer-events:auto;background:radial-gradient(ellipse 60% 55% at 50% 50%,rgba(7,6,11,.82) 0%,rgba(7,6,11,.6) 45%,rgba(7,6,11,.15) 100%);transition:opacity 1.3s}
 #intro .date{font:500 12px Inter;letter-spacing:.38em;color:var(--blush);margin-bottom:22px;opacity:.9}
 #intro h1{font-family:Fraunces,serif;font-weight:300;font-size:clamp(52px,11vw,124px);letter-spacing:-.025em;line-height:1;text-shadow:0 0 50px rgba(255,126,179,.35)}
 #intro h1 i{color:var(--blush)}
@@ -427,13 +427,14 @@ function trailResize(){tc.width=Math.round(innerWidth*TPR);tc.height=Math.round(
 const mkDot=c1=>{const c=document.createElement('canvas');c.width=c.height=48;const g=c.getContext('2d');const r=g.createRadialGradient(24,24,0,24,24,24);r.addColorStop(0,'rgba(255,246,250,.85)');r.addColorStop(.3,c1);r.addColorStop(1,'rgba(255,126,179,0)');g.fillStyle=r;g.fillRect(0,0,48,48);return c};
 const DOTS=[mkDot('rgba(255,126,179,.42)'),mkDot('rgba(255,198,218,.42)')];
 const lastTip=[null,null];
+let trailT=0,trailClean=true;
 function drawTrail(){
-  tg.globalCompositeOperation='destination-out';tg.fillStyle='rgba(0,0,0,.12)';tg.fillRect(0,0,innerWidth,innerHeight);
+  if(performance.now()-trailT>1500){if(!trailClean){tg.clearRect(0,0,innerWidth,innerHeight);trailClean=true}}else{tg.globalCompositeOperation='destination-out';tg.fillStyle='rgba(0,0,0,.14)';tg.fillRect(0,0,innerWidth,innerHeight)}
   tg.globalCompositeOperation='lighter';const sz=isMobile?18:22;
   for(let i=0;i<2;i++){const h=hands[i];
     if(!h||h.fist||boothOn||(!h.cam&&!ptr.down&&performance.now()-ptr.last>90)){lastTip[i]=null;continue}
     const x=h.tx,y=h.ty,L=lastTip[i];
-    if(L){const dx=x-L[0],dy=y-L[1],d=Math.hypot(dx,dy);if(d>1.5&&d<400){const n=Math.min(26,Math.ceil(d/5));for(let k=1;k<=n;k++)tg.drawImage(DOTS[i],L[0]+dx*k/n-sz/2,L[1]+dy*k/n-sz/2,sz,sz);
+    if(L){const dx=x-L[0],dy=y-L[1],d=Math.hypot(dx,dy);if(d>1.5&&d<400){trailT=performance.now();trailClean=false;const n=Math.min(26,Math.ceil(d/5));for(let k=1;k<=n;k++)tg.drawImage(DOTS[i],L[0]+dx*k/n-sz/2,L[1]+dy*k/n-sz/2,sz,sz);
       const sp=Math.min(6,Math.ceil(d/14));for(let k=0;k<sp;k++){const q=Math.random(),r=(4+Math.random()*16),a=Math.random()*6.283,ss=sz*(.2+Math.random()*.3);tg.drawImage(DOTS[1-i],L[0]+dx*q+Math.cos(a)*r-ss/2,L[1]+dy*q+Math.sin(a)*r-ss/2,ss,ss)}}}
     lastTip[i]=[x,y]}
 }
