@@ -180,7 +180,7 @@ const CFG = {
   signature: 'Yêu em – Ken',
   bestPhoto: '052.jpg',
   framePhotos: ['100.jpg','024.jpg','016.jpg','046.jpg','107.jpg','035.jpg','056.jpg','062.jpg'],
-  meetDate: null,          // e.g. '2026-12-18' → shows a live "N days to go"
+  meetDate: '2026-12-22',          // e.g. '2026-12-18' → shows a live "N days to go"
 };
 const COPY = {
   hello: ['Chào công chúa'],
@@ -220,7 +220,8 @@ const COPY = {
   darkQ: 'Ước gì vậy?',
   darkA1: 'Thôi, đừng nói.',
   darkA2: 'Nói ra hết linh.',
-  hbdLines: ['Chúc mừng sinh nhật,', 'Chip'],
+  hbdLines: ['Chúc mừng sinh nhật,', 'công chúa của tôi'],
+  hbdLinesP: ['Chúc mừng', 'sinh nhật,', 'công chúa của tôi'],
   bestLine: 'Level 21: đã mở khóa.',
   rev0: 'Còn một món nữa.',
   rev0b: 'Mở đi.',
@@ -230,13 +231,13 @@ const COPY = {
   rev: [
     ['Quà thật thì phải đưa tận tay.', ''],
     ['Gợi ý: nó biết phát sáng.', 'và sẽ đầy ảnh em.'],
-    ['Tháng Mười Hai.', ''],
+    ['Hẹn em 22 tháng 12.', ''],
   ],
-  countdownDays: d => `còn ${d} ngày nữa thôi`,
-  countdownTomorrow: 'ngày mai đó ♡',
-  countdownToday: 'hôm nay ♡',
+  countdownDays: d => `còn ${d} ngày`,
+  countdownTomorrow: 'ngày mai',
+  countdownToday: 'hôm nay',
   countdownNone: 'anh đang đếm từng ngày',
-  credits: [['NHÂN VẬT CHÍNH','Chip, 21 tuổi'],['TRANG PHỤC','vương miện Peach'],['BỐI CẢNH','Orlando · Plano · Barrie'],['ĐẠO DIỄN, LẬP TRÌNH & XÁCH ĐỒ','Ken'],['SỐ NGÔI SAO','nhiều lắm (không đếm nổi)'],['TẬP SAU','tháng Mười Hai']],
+  credits: [['NHÂN VẬT CHÍNH','Chip, 21 tuổi'],['TRANG PHỤC','vương miện Peach'],['BỐI CẢNH','Orlando · Plano · Barrie'],['ĐẠO DIỄN, LẬP TRÌNH & XÁCH ĐỒ','Ken'],['SỐ NGÔI SAO','nhiều lắm (không đếm nổi)'],['TẬP SAU','22 · 12 · 2026']],
   end1: 'Hết rồi.',
   end2: 'Ở lại chơi bao lâu cũng được.',
   encBooth: 'Chụp thêm',
@@ -820,7 +821,7 @@ const scenes=[
    later(3600,()=>{if(S!==this)return;this.l0=st;this.lantern=true;if(AC)sfx.note(196,AC.currentTime,4,'sine',.06)})},
  peak(){$('black').style.opacity=0;phys('calm');swell(1.15,1600);sfx.boom();burst(1.6);confetti(.3,.6,1.2);confetti(.7,.6,1.2);sfx.duck(false);
    later(300,()=>sfx.birthday());
-   later(1100,()=>{if(S!==this)return;writeT(COPY.hbdLines,{italic:true,w:400,fs:portrait()?150:160,fit:portrait()?.92:.86},{spread:5,travel:2.6})});
+   later(1100,()=>{if(S!==this)return;writeT(portrait()?COPY.hbdLinesP:COPY.hbdLines,{italic:true,w:400,fs:portrait()?170:150,fit:portrait()?.92:.88,ch:portrait()?600:420},{spread:5.6,travel:2.6})});
    [3200,6200,9200].forEach(t=>later(t,()=>confetti(.15+Math.random()*.7,.2+Math.random()*.3,.8)));
    later(17500,()=>{if(S!==this)return;writeT([String(CFG.age)],{cw:440,ch:300,fs:250,italic:true,fit:.6},{spread:2.4,travel:2.6})});
    later(28500,async()=>{if(S!==this)return;mode('img');const r=await photoT(CFG.bestPhoto,.66);if(S!==this)return;
