@@ -809,7 +809,7 @@ const scenes=[
    const lines=[par,par2].filter(Boolean);if(!lines.length)return;
    const drawL=()=>{const u=Math.min(1,(performance.now()-t0)/380);g.strokeStyle='rgba(255,214,230,.7)';g.lineWidth=1.4;
      lines.forEach(q=>{g.beginPath();g.moveTo(q.x,q.y);g.lineTo(q.x+(n.x-q.x)*u,q.y+(n.y-q.y)*u);g.stroke()});if(u<1)requestAnimationFrame(drawL)};drawL()},
- step(){if(this.st!=='years'||this.k>=21)return;const now=performance.now();if(now-this.lastStep<360)return;this.lastStep=now;this.lastIn=st;
+ step(){if(this.st!=='years'||this.k>=21)return;const now=performance.now();if(now-this.lastStep<250)return;this.lastStep=now;this.lastIn=st;
    this.k++;const k=this.k;this.girl(k);this.lightNode(k-1);
    const b=$('agen');if(b){b.textContent=k;b.classList.add('tick');setTimeout(()=>b.classList.remove('tick'),260)}const d=$('aged');if(d)d.textContent='22 · 10 · '+(2005+k);
    if(k===3)say('','');sfT=.3*k/21;
