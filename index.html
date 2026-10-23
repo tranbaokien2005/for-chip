@@ -187,7 +187,7 @@ body{-webkit-touch-callout:none}
 .bub[data-who=berry]{border-color:rgba(255,217,207,.6)}.bub[data-who=berry] b{color:#ffd9cf}
 .bub[data-who=ken] b{color:#cdbcf5}.bub[data-who=ken]{border-color:rgba(205,188,245,.5)}
 .bub::after{content:'';position:absolute;left:var(--tx);bottom:-6px;width:10px;height:10px;margin-left:-5px;background:rgba(18,10,22,.9);border-right:1px solid rgba(255,198,218,.36);border-bottom:1px solid rgba(255,198,218,.36);transform:rotate(45deg)}
-.bub.ic{padding:5px 10px 6px;border-radius:999px;font-size:19px;line-height:1;color:#ff7eb3;text-shadow:0 0 12px rgba(255,126,179,.7);scale:.6;transition:opacity .45s,translate .45s,scale .5s cubic-bezier(.34,1.8,.5,1)}
+.bub.ic{padding:6px 11px 7px;border-radius:999px;font-size:21px;line-height:1;letter-spacing:2px;color:#ff7eb3;scale:.6;transition:opacity .45s,translate .45s,scale .5s cubic-bezier(.34,1.8,.5,1)}
 .bub.ic.on{scale:1}.bub.ic i{display:inline-block;font-style:normal;animation:hb 1.15s ease-in-out infinite}
 @keyframes hb{0%,100%{transform:scale(1)}12%{transform:scale(1.22)}24%{transform:scale(1)}36%{transform:scale(1.14)}}
 #t2 .k2{opacity:0;transition:opacity 1.2s}#t2 .k2.on{opacity:1}
@@ -385,7 +385,7 @@ const COPY = {
   wishA: 'Giờ thổi bánh kem nhé?',
   wishB1: 'Khoan…', wishB2: 'ước một điều trước đã.',
   chName: ['Bé xíu','Đi học','Mới lớn','Bay xa'], chNum: ['I','II','III','IV'],
-  chHint: ['✊ nắm rồi ✋ mở tay','👋 vẫy tay','✌️ giơ hai ngón','🤏 chụm hai ngón'], chHintEnd: ' để lớn thêm một tuổi · hoặc chạm',
+  chHint: ['✊ nắm rồi ✋ mở tay','🤏 chụm hai ngón','✌️ giơ hai ngón','✋ xoè tay giữ một nhịp'], chHintEnd: ' để lớn thêm một tuổi · hoặc chạm',
   hbd21: ['Chúc mừng 21 tuổi', 'Phạm Thị Minh Tú'],
   hbd21P: ['Chúc mừng 21 tuổi', 'Phạm Thị', 'Minh Tú'],
   boothAsk: 'Đội vương miện chụp một tấm nhé?',
@@ -632,8 +632,8 @@ function inkRank(P,cnt,cw,ch,nL){
    a two-number arm is [upper, forearm]. legs: stand | walk | run | jump | tip. arm: ±1 → that arm is its own layer (it moves) */
 const GPOSE={2:{arms:[[-35],[-35]]},3:{arms:[[-58],[-50]],legs:'jump'},4:{arms:[[14],[80]],legs:'walk'},6:{arms:[[82],[-14,-80]],arm:1},
   7:{arms:[[-24],[-42]],legs:'run'},8:{arms:[[-6],[-12]],legs:'tip',flare:1.12},9:{arms:[[80],[-14]],legs:'walk'},10:{arms:[[-60],[-64]],legs:'jump'},
-  11:{arms:[[80],[66]],legs:'walk'},12:{arms:[[80],[-66]],arm:1},13:{arms:[[-26,-74],[-26,-74]],legs:'tip',flare:1.18},14:{arms:[[62],[-34]],legs:'run'},
-  15:{arms:[[80],[56]],legs:'walk'},16:{arms:[[80],[-20]],arm:1},17:{arms:[[82],[76]]}};
+  11:{arms:[[80],[66]],legs:'walk'},12:{arms:[[80],[-66]],arm:1},13:{arms:[[-26,-74],[-26,-74]],legs:'tip',flare:1.18},14:{arms:[[82],[64,-104]]},
+  15:{arms:[[72],[72]],legs:'walk'},16:{arms:[[80],[-20]],arm:1},17:{arms:[[82],[76]]}};
 function girlGeo(W,H,a){
   const HT=[50,75,86,95,102,109,115,122,128,133,138,144,150,155,158,160,161,162,162,162,162,162];
   const lerpT=(arr,x)=>{for(let i=0;i<arr.length-1;i++){const [x0,y0]=arr[i],[x1,y1]=arr[i+1];if(x<=x1)return y0+(y1-y0)*(x-x0)/(x1-x0)}return arr[arr.length-1][1]};
@@ -666,10 +666,12 @@ function drawGirl(g,W,H,a,pose,part){
   const drawArm=(s,spec)=>{const pts=girlArm(G,a,spec,s),path=()=>{g.beginPath();g.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)g.lineTo(pts[i][0],pts[i][1])};
     erase(()=>{g.lineWidth=lw*.85+5;path();g.stroke()});g.lineWidth=lw*.85;path();g.stroke();const e=pts[pts.length-1];g.beginPath();g.arc(e[0],e[1],lw*.55,0,7);g.fill()};
   if(part==='arm'){drawArm(P.arm,armSpec[P.arm<0?0:1]);g.restore();return}
+  const HS=P.hair||(a>=13?'long':a>=8?'bob':a>=3?'pig':'baby');
   const hairBack=()=>{
-    if(a>=13){const bot=a>=18?waistY+r*.2:shY+r*1.5;g.beginPath();g.moveTo(cx-r*1.12,hy);g.quadraticCurveTo(cx-r*1.3,(hy+bot)/2,cx-r*1.15,bot);g.quadraticCurveTo(cx,bot+r*.35,cx+r*1.15,bot);g.quadraticCurveTo(cx+r*1.3,(hy+bot)/2,cx+r*1.12,hy);g.arc(cx,hy,r*1.12,0,Math.PI,true);g.fill()}
-    else if(a>=8){g.beginPath();g.moveTo(cx-r*1.1,hy);g.lineTo(cx-r*1.12,hy+r*.95);g.quadraticCurveTo(cx,hy+r*1.15,cx+r*1.12,hy+r*.95);g.lineTo(cx+r*1.1,hy);g.arc(cx,hy,r*1.1,0,Math.PI,true);g.fill()}
-    else if(a>=3){[[-1,1],[1,1]].forEach(([s])=>{g.beginPath();g.arc(cx+s*r*1.18,hy-r*.05,r*.46,0,7);g.fill()});g.beginPath();g.arc(cx,hy,r*1.08,Math.PI,0);g.fill()}
+    if(HS==='bun'){g.beginPath();g.arc(cx,top+r*.02,r*.48,0,7);g.fill()}
+    if(HS==='long'){const bot=a>=18?waistY+r*.2:shY+r*1.5;g.beginPath();g.moveTo(cx-r*1.12,hy);g.quadraticCurveTo(cx-r*1.3,(hy+bot)/2,cx-r*1.15,bot);g.quadraticCurveTo(cx,bot+r*.35,cx+r*1.15,bot);g.quadraticCurveTo(cx+r*1.3,(hy+bot)/2,cx+r*1.12,hy);g.arc(cx,hy,r*1.12,0,Math.PI,true);g.fill()}
+    else if(HS==='bob'||HS==='bun'){g.beginPath();g.moveTo(cx-r*1.1,hy);g.lineTo(cx-r*1.12,hy+r*.95);g.quadraticCurveTo(cx,hy+r*1.15,cx+r*1.12,hy+r*.95);g.lineTo(cx+r*1.1,hy);g.arc(cx,hy,r*1.1,0,Math.PI,true);g.fill()}
+    else if(HS==='pig'){[[-1,1],[1,1]].forEach(([s])=>{g.beginPath();g.arc(cx+s*r*1.18,hy-r*.05,r*.46,0,7);g.fill()});g.beginPath();g.arc(cx,hy,r*1.08,Math.PI,0);g.fill()}
     else{g.beginPath();g.arc(cx,hy,r*1.05,Math.PI*1.05,-.05*Math.PI);g.fill();g.beginPath();g.arc(cx+r*.1,top-r*.05,r*.26,0,7);g.fill()}};
   // balloon (3-4) tied to the right hand
   if(a>=3&&a<=4){const rh=girlArm(G,a,armSpec[1],1),[hx,hyy]=rh[rh.length-1],bs=r*.95,bx=hx+r*.45,by=Math.min(top,hyy)-r*1.7;g.lineWidth=1.6;g.beginPath();g.moveTo(hx,hyy);g.quadraticCurveTo(hx+r*.7,(hyy+by)/2,bx,by+bs*.9);g.stroke();
@@ -709,31 +711,74 @@ function lifeLoad(){if(LIFE.p)return LIFE.p;return LIFE.p=(async()=>{const k=awa
 const LCAP={0:'Thế giới có thêm một người mê ngủ.',1:'Chưa biết đi, nhưng đã biết bỏ chạy.',2:'Bước nào cũng có người nắm tay.',3:'Ngày đầu đi mẫu giáo.',4:'Có hai chị sinh đôi. Ra đường là có vệ sĩ.',
   5:'Mùa hè ở hồ bơi. Nước bắn lên tới trời.',6:'Vào lớp Một. Cặp to hơn người.',7:'Cả buổi chiều đuổi bướm. Bướm thắng.',8:'Bong bóng xà phòng. Cái nào cũng muốn giữ.',
   9:'Thả diều. Người cầm dây còn vui hơn diều.',10:'Ảnh cả nhà. Ai cũng cao hơn em, trừ Berry.',11:'Vào cấp Hai, trường Trưng Vương.',12:'Bắt đầu thích ngắm sao.',
-  13:'Tóc dài ra. Chuyện cũng dài ra.',14:'Chạy theo trăng. Trăng chạy theo lại.',15:'Vào cấp Ba, FPT. Lịch học kín, ước mơ còn kín hơn.',16:'Gấp máy bay giấy. Nhắm hướng thật xa.',
+  13:'Tóc dài ra. Chuyện cũng dài ra.',14:'Lớp 9. Tan học là rủ nhau đi ăn vặt.',15:'Vào cấp Ba, FPT. Có thêm một hội bạn thân.',16:'Chở bạn đi vòng vòng Đà Nẵng.',
   17:'Năm 2023. Có một người tên Ken.',18:'Sang Mỹ. Năm nhất ở Miami.',19:'Chuyển về Texas. Trời rộng, sao nhiều.',20:'Orlando, tháng Bảy. Gần 200 tấm ảnh, vẫn thấy thiếu.',
   21:'21 tuổi. Năm cuối. Vương miện này là của em.'};
 /* who says what (speech bubbles). [who, text, layer to follow, anchor x, anchor y] — anchors are in the 760×560 stage */
 const LTALK=(()=>{const cx=380,B=543.2;return {
   0:[['berry','Berry trực đêm. Chị Chip cứ ngủ đi.']],
   1:[['berry','Ơ… chị Chip đợi Berry với!']],
-  2:[['mom','♥','fam',cx-118,B-470],['dad','♥','fam',cx+124,B-507]],
+  2:[['mom','🥰👣','fam',cx-118,B-470],['dad','💪👣','fam',cx+124,B-507]],
   3:[['berry','Chị khóc hay không, Berry không kể đâu.']],
-  4:[['sis','♥','fam',cx-168,B-418],['sis','♥','fam',cx-94,B-418]],
+  4:[['sis','🎀🍭','fam',cx-168,B-418],['sis','🌸🎈','fam',cx-94,B-418]],
   5:[['berry','Berry không biết bơi. Berry canh khăn cho chị.']],
   6:[['berry','Chị Chip đi học vui nha. Berry đợi ở nhà.']],
   8:[['berry','Chị thổi cho Berry một cái với.']],
-  10:[['dad','♥','fam',cx-212,B-502],['mom','♥','fam',cx-122,B-467],['sis','♥','fam',cx+78,B-432],['sis','♥','fam',cx+158,B-427]],
+  10:[['dad','💪📸','fam',cx-212,B-502],['mom','🥰✨','fam',cx-122,B-467],['sis','🎀✌️','fam',cx+78,B-432],['sis','🌸😆','fam',cx+158,B-427]],
   11:[['berry','Chị học bài đi, Berry dò bài cho.']],
-  14:[['berry','Lớn rồi chị vẫn ôm Berry ngủ. Berry giữ bí mật.']],
-  16:[['berry','Chị bay xa nhớ mang Berry theo nha.']],
+  12:[['berry','Chị bay xa nhớ mang Berry theo nha.']],
+  13:[['berry','Lớn rồi chị vẫn ôm Berry ngủ. Berry giữ bí mật.']],
+  14:[['fr','🧋😋','fr',cx-205,B-494],['fr','🍢😆','fr',cx+105,B-494],['berry','Chị mua thêm một ly cho Berry nha.']],
+  15:[['fr','🎒✨','fr',cx-175,B-500],['fr','📚😆','fr',cx+155,B-500],['berry','Cho Berry vào hội với.']],
+  16:[['fr','🛵💨🥳','fr',cx-92,B-246],['berry','Chị chạy chậm thôi, Berry say xe.']],
   17:[['berry','Ai đây chị Chip? Để Berry kiểm tra.']],
-  18:[['mom','📞 ♥',null,120,B-440],['berry','Berry đi cùng chị. Hành lý quan trọng nhất.']],
+  18:[['mom','📞🥰🍚',null,120,B-440],['berry','Berry đi cùng chị. Hành lý quan trọng nhất.']],
   19:[['berry','Texas to ghê. Berry bám chị, không lạc đâu.']],
   20:[['berry','Hai người cứ chơi, Berry giữ đồ.']],
   21:[['berry','21 tuổi rồi. Berry vẫn ở đây với chị.']]}})();
 const LWHO={berry:'Berry',mom:'Mẹ',dad:'Bố',sis:'Chị',ken:'Ken'};
 const chOf=k=>k<6?0:k<12?1:k<18?2:3;
-const LC={me:'#ffe9f2',fam:'#e9a9c8',dad:'#c9a9df',sis:'#f5c0d7',pr:'#ffbcd6',st:'#a9e4c6',gd:'#ffe0a3',ken:'#cdbcf5'};
+const LC={me:'#ffe9f2',fam:'#e9a9c8',dad:'#c9a9df',sis:'#f5c0d7',pr:'#ffbcd6',st:'#a9e4c6',gd:'#ffe0a3',ken:'#cdbcf5',fr1:'#f8cfae',fr2:'#c8d6f8'};
+/* her girlfriends (Đà Nẵng years) */
+const FPOSE={14:[{arms:[[64,-104],[80]],hair:'bob'},{arms:[[12],[64,-104]],hair:'bun',legs:'walk'}],15:[{arms:[[80],[72]],legs:'walk',hair:'bob'},{arms:[[72],[80]],legs:'walk',hair:'bun'}]};
+function handOf(a,pose,x,s){const p=girlArm(girlGeo(420,560,a),a,pose.arms[s<0?0:1],s),e=p[p.length-1];return [x-210+e[0],LB-543+e[1]]}
+function lCup(g,x,y){g.save();g.translate(x,y);g.beginPath();g.moveTo(-10,-16);g.lineTo(10,-16);g.lineTo(7.5,13);g.quadraticCurveTo(0,16,-7.5,13);g.closePath();g.fill();g.fillRect(-11.5,-20,23,4.5);
+  g.lineWidth=2.6;g.lineCap='round';g.beginPath();g.moveTo(2,-20);g.lineTo(7,-36);g.stroke();
+  g.globalCompositeOperation='destination-out';[[-4,8],[1,9],[5,6],[-1,4]].forEach(([u,v])=>{g.beginPath();g.arc(u,v,1.9,0,7);g.fill()});g.restore()}
+function lCart(g,x){const y=LB;g.fillStyle=LC.pr;g.fillRect(x-56,y-96,112,58);g.fillRect(x-62,y-102,124,7);
+  [[x-36],[x+36]].forEach(([wx])=>{g.beginPath();g.arc(wx,y-20,17,0,7);g.fill()});g.save();g.globalCompositeOperation='destination-out';[[x-36],[x+36]].forEach(([wx])=>{g.beginPath();g.arc(wx,y-20,10,0,7);g.fill()});
+  g.fillRect(x-44,y-86,88,4);g.restore();
+  g.fillStyle=LC.gd;[[x-34,7],[x-14,9],[x+8,6]].forEach(([jx,h])=>{g.beginPath();g.roundRect?g.roundRect(jx-6,y-102-h*2.4,12,h*2.4,3):g.rect(jx-6,y-102-h*2.4,12,h*2.4);g.fill()});
+  g.fillRect(x+40,y-220,4,124);g.beginPath();g.ellipse(x+42,y-220,62,32,0,Math.PI,0);g.closePath();g.fill();
+  g.save();g.globalCompositeOperation='destination-out';for(let i=0;i<6;i++){g.beginPath();g.arc(x-20+i*124/6+1,y-220,10,0,Math.PI);g.fill()}g.restore()}
+/* side view: two girls on a scooter, helmets on */
+function lRider(g,x,col,lean,arm){g.fillStyle=col;g.strokeStyle=col;g.lineCap='round';g.lineJoin='round';const y=LB;
+  g.beginPath();g.moveTo(x-22,y-92);g.quadraticCurveTo(x-26,y-150,x-10+lean,y-188);g.lineTo(x+16+lean,y-186);g.quadraticCurveTo(x+18,y-140,x+18,y-96);g.closePath();g.fill();
+  g.lineWidth=17;g.beginPath();g.moveTo(x-8,y-100);g.lineTo(x+40,y-104);g.lineTo(x+52,y-60);g.stroke();g.beginPath();g.ellipse(x+60,y-56,13,6,0,0,7);g.fill();
+  g.lineWidth=12;g.beginPath();g.moveTo(x+6+lean,y-176);g.lineTo(arm[0],arm[1]);g.lineTo(arm[2],arm[3]);g.stroke();
+  const hx=x+6+lean,hy=y-214;g.beginPath();g.arc(hx,hy,21,0,7);g.fill();
+  g.beginPath();g.moveTo(hx-14,hy-6);g.quadraticCurveTo(hx-44,hy+4,hx-58,hy+30);g.quadraticCurveTo(hx-40,hy+18,hx-16,hy+12);g.closePath();g.fill();
+  g.beginPath();g.arc(hx+1,hy-4,25,Math.PI*1.02,Math.PI*1.98);g.lineTo(hx+28,hy+2);g.lineTo(hx-24,hy+2);g.closePath();g.fill();
+  g.save();g.globalCompositeOperation='destination-out';g.lineWidth=2.2;g.beginPath();g.moveTo(hx-23,hy+2);g.lineTo(hx+27,hy+2);g.stroke();g.beginPath();g.arc(hx+11,hy+8,2.3,0,7);g.fill();g.lineWidth=1.8;g.beginPath();g.arc(hx+13,hy+13,5,.1,1.5);g.stroke();g.restore()}
+function lScooter(g,x){const y=LB;g.fillStyle=LC.pr;g.strokeStyle=LC.pr;g.lineCap='round';g.lineJoin='round';
+  g.beginPath();g.moveTo(x-130,y-46);g.quadraticCurveTo(x-132,y-92,x-96,y-100);g.lineTo(x+4,y-104);g.quadraticCurveTo(x+16,y-100,x+18,y-84);g.lineTo(x+22,y-60);g.lineTo(x+66,y-58);
+  g.quadraticCurveTo(x+78,y-110,x+92,y-160);g.lineTo(x+104,y-158);g.quadraticCurveTo(x+112,y-110,x+124,y-50);g.quadraticCurveTo(x+100,y-62,x+70,y-42);g.lineTo(x-60,y-42);g.quadraticCurveTo(x-90,y-64,x-130,y-46);g.closePath();g.fill();
+  g.lineWidth=6;g.beginPath();g.moveTo(x+96,y-158);g.lineTo(x+82,y-182);g.lineTo(x+62,y-182);g.stroke();
+  g.fillStyle=LC.gd;g.beginPath();g.ellipse(x+108,y-140,7,10,.3,0,7);g.fill();
+  g.fillStyle=LC.pr;g.save();g.globalCompositeOperation='destination-out';g.lineWidth=2;g.beginPath();g.moveTo(x-110,y-70);g.quadraticCurveTo(x-60,y-80,x-10,y-74);g.stroke();g.restore()}
+function lWheel(g,x,y,R){g.save();g.fillStyle='#f3e8ff';g.strokeStyle='#f3e8ff';g.beginPath();g.arc(x,y,R,0,7);g.fill();g.globalCompositeOperation='destination-out';g.beginPath();g.arc(x,y,R*.66,0,7);g.fill();g.restore();
+  g.save();g.strokeStyle='#f3e8ff';g.fillStyle='#f3e8ff';g.lineWidth=3;for(let i=0;i<3;i++){const t=i*2.094;g.beginPath();g.moveTo(x,y);g.lineTo(x+Math.cos(t)*R*.68,y+Math.sin(t)*R*.68);g.stroke()}g.beginPath();g.arc(x,y,5,0,7);g.fill();g.restore()}
+/* Cầu Rồng — Đà Nẵng's Dragon Bridge, lit gold at night */
+function lDragonBridge(g,W){const d=LB-232;g.save();g.strokeStyle=LC.gd;g.fillStyle=LC.gd;g.lineCap='round';g.lineJoin='round';
+  g.lineWidth=3.5;g.beginPath();g.moveTo(10,d);g.lineTo(W-10,d);g.stroke();
+  for(let i=0;i<9;i++){const x=40+i*82;g.lineWidth=2;g.beginPath();g.moveTo(x,d);g.lineTo(x,d+26);g.stroke()}
+  g.lineWidth=8;g.beginPath();const x0=60,x1=W-120;for(let k=0;k<=120;k++){const u=k/120,x=x0+(x1-x0)*u,y=d-Math.abs(Math.sin(u*Math.PI*3))*96;k?g.lineTo(x,y):g.moveTo(x,y)}g.stroke();
+  g.lineWidth=5;g.beginPath();g.moveTo(x0,d);g.quadraticCurveTo(x0-30,d-30,x0-12,d-48);g.quadraticCurveTo(x0+4,d-58,x0+8,d-44);g.stroke();
+  const hx=x1+40,hy=d-118;g.lineWidth=8;g.beginPath();g.moveTo(x1,d);g.quadraticCurveTo(x1+18,d-70,hx-14,hy+20);g.stroke();
+  g.beginPath();g.moveTo(hx-22,hy+10);g.lineTo(hx+34,hy+2);g.lineTo(hx+40,hy+14);g.lineTo(hx+16,hy+18);g.lineTo(hx+34,hy+30);g.lineTo(hx-8,hy+30);g.closePath();g.fill();
+  g.lineWidth=3;[[hx-14,hy+8,hx-30,hy-22],[hx-4,hy+6,hx-12,hy-26]].forEach(([a,b,c,e])=>{g.beginPath();g.moveTo(a,b);g.quadraticCurveTo(a-4,(b+e)/2,c,e);g.stroke()});
+  g.restore();return [hx+40,hy+16]}
+
 let LB=543;
 const gauss=()=>{let u=0;while(!u)u=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(6.2832*Math.random())};
 function lDither(x,w,h,keep,seed){const d=x.getImageData(0,0,w,h),a=d.data;let s=seed;for(let i=3;i<a.length;i+=4)if(a[i]){s=(s*16807)%2147483647;if(s/2147483647>keep)a[i]=0}x.putImageData(d,0,0)}
@@ -819,9 +864,18 @@ function lifeLayers(k,W,H){LB=H*.97;const cx=W/2,L=LIFE.ok,ly=[],add=(id,draw,pi
     case 11:{add('me',me(11));const [hx,hy]=hand(11,cx,1);add('deco',g=>{g.fillStyle=LC.pr;g.save();g.translate(hx+4,hy+4);g.rotate(-.15);g.fillRect(-16,-22,32,44);g.restore()},'c');ber(cx-92);break}
     case 12:add('me',me(12));armL(12,cx);add('deco',g=>{g.fillStyle=LC.pr;[[cx-130,LB-380,10],[cx+150,LB-470,9],[cx-90,LB-460,6],[cx+60,LB-500,5]].forEach(([x,y,r])=>lStar(g,x,y,r,4,.3))},'c');ber(cx-92);break;
     case 13:add('me',me(13));add('deco',g=>{g.fillStyle=LC.gd;[[cx-140,LB-300],[cx-100,LB-380],[cx+120,LB-330],[cx+150,LB-400],[cx+90,LB-450],[cx-60,LB-440]].forEach(([x,y])=>{g.beginPath();g.arc(x,y,3.2,0,7);g.fill()})},'c');ber(cx+92);break;
-    case 14:add('me',me(14));add('deco',g=>{g.fillStyle=LC.pr;g.beginPath();g.arc(cx-140,LB-430,22,0,7);g.fill();g.save();g.globalCompositeOperation='destination-out';g.beginPath();g.arc(cx-130,LB-438,20,0,7);g.fill();g.restore();lStar(g,cx+130,LB-400,7,4,.3)},'c');ber(cx+150);break;
-    case 15:{add('me',me(15));const [hx,hy]=hand(15,cx,1);add('deco',g=>lBag(g,hx-22,hy+8),[hx,hy]);ber(cx-92);break}
-    case 16:{add('me',me(16));armL(16,cx);const [hx,hy]=hand(16,cx,1);add('deco',g=>{g.fillStyle=LC.pr;const x=hx+34,y=hy-6;g.beginPath();g.moveTo(x+30,y-10);g.lineTo(x-26,y-2);g.lineTo(x-6,y+6);g.closePath();g.fill();g.beginPath();g.moveTo(x+30,y-10);g.lineTo(x-6,y+6);g.lineTo(x-2,y+20);g.closePath();g.fill()},'c');ber(cx-92);break}
+    case 14:{const A=cx-205,C=cx-45,Bx=cx+105,[F1,F2]=FPOSE[14];add('deco2',g=>lCart(g,cx+268));
+      add('fr',g=>{lPut(g,lgC(14,LC.fr1,1,5,F1),A);lPut(g,lgC(14,LC.fr2,1,9,F2),Bx);g.fillStyle=LC.fr1;g.strokeStyle=LC.fr1;let [x,y]=handOf(14,F1,A,-1);lCup(g,x,y-8);g.fillStyle=LC.fr2;g.strokeStyle=LC.fr2;[x,y]=handOf(14,F2,Bx,1);lCup(g,x,y-8)});
+      add('me',g=>{lPut(g,lgC(14,LC.me,1,7,GPOSE[14]),C);g.fillStyle=LC.me;g.strokeStyle=LC.me;const [x,y]=hand(14,C,1);lCup(g,x,y-8)});
+      add('deco',g=>{g.strokeStyle=LC.gd;g.lineWidth=2.4;g.lineCap='round';[-14,4,22].forEach(o=>{const x=cx+250+o;g.beginPath();g.moveTo(x,LB-112);g.bezierCurveTo(x-8,LB-128,x+8,LB-140,x,LB-156);g.stroke()})},'c');ber(cx-318);break}
+    case 15:{const A=cx-175,C=cx-10,Bx=cx+155,[F1,F2]=FPOSE[15];add('fr',g=>{lPut(g,lgC(15,LC.fr1,1,5,F1),A);lPut(g,lgC(15,LC.fr2,1,9,F2),Bx)});add('me',me15=>lPut(me15,lgC(15,LC.me,1,7,GPOSE[15]),C));ber(cx+300);break}
+    case 16:{const x0=cx-30;add('deco2',g=>lDragonBridge(g,W));
+      add('deco',g=>{g.fillStyle=LC.gd;const fx=W-50,fy=LB-334;[[0,0,9],[16,-4,7],[30,-10,5]].forEach(([u,v,r])=>{g.beginPath();g.arc(fx+u,fy+v,r,0,7);g.fill()})},[W-50,LB-334]);
+      add('w1',g=>lWheel(g,x0-92,LB-30,30),[x0-92,LB-30]);add('w2',g=>lWheel(g,x0+96,LB-30,30),[x0+96,LB-30]);
+      add('veh',g=>lScooter(g,x0));
+      add('fr',g=>lRider(g,x0-68,LC.fr1,-6,[x0-50,LB-150,x0-14,LB-138]));
+      add('me',g=>lRider(g,x0-8,LC.me,4,[x0+40,LB-160,x0+64,LB-180]));
+      add('berry',g=>drawBerry(g,x0+128,LB-150,46),'c');break}
     case 17:add('ken',tile('k118',cx+105,520,g=>lPut(g,lmC(LC.ken,.7),cx+105),.72));add('me',meAt(17,cx-92));add('deco',g=>{g.fillStyle=LC.pr;lHeart(g,cx+6,LB-430,22)},'c');ber(cx-196);break;
     case 18:add('me',tile('c092',cx,488,me(18)));add('deco2',g=>{g.fillStyle=LC.st;g.strokeStyle=LC.st;lPalm(g,cx-215,300);lPalm(g,cx-150,220)});add('deco',g=>{g.fillStyle=LC.pr;lPlane(g,cx+150,LB-440,26)},'c');ber(cx+96);break;
     case 19:add('me',tile('c023',cx,490,me(19)));add('deco',g=>{g.fillStyle=LC.gd;lStar(g,cx+165,LB-400,34)},'c');ber(cx+104);break;
@@ -838,7 +892,7 @@ function lifeMot(k,id,t,a){const S=Math.sin,PI=Math.PI,cl=x=>x<0?0:x>1?1:x,E=x=>
   const run=(amp,w)=>{dx+=S(t*w)*amp;dy-=Math.abs(S(t*8.5))*5};
   const beat=()=>{const b=t%1.15;return Math.exp(-Math.pow((b-.08)/.07,2))+.7*Math.exp(-Math.pow((b-.3)/.07,2))};
   if(ME||id==='fam'||id==='ken')dy-=Math.max(0,S(t*1.7+(id==='fam'?1.3:id==='ken'?2.1:0)))*1.2;
-  if(id==='berry')dy+=hop(4.6,11);
+  if(id==='berry'&&k!==16)dy+=hop(4.6,11);
   if(id==='flower')r=S(t*1.1)*.035;
   if(id==='deco2')r=S(t*.9)*.02;
   switch(k){
@@ -849,14 +903,15 @@ function lifeMot(k,id,t,a){const S=Math.sin,PI=Math.PI,cl=x=>x<0?0:x>1?1:x,E=x=>
     case 4:if(ME||id==='fam')walk(18,2.6);break;
     case 5:if(id==='deco')s=1+.13*(.5+.5*S(t*2.6));if(id==='me')r=S(t*1.3)*.012;break;
     case 6:if(id==='arm')r=-.1+.28*S(t*5.4);if(id==='deco')r=S(t*2.2)*.12;break;
-    case 7:case 14:{const w=k===7?.55:.72;if(ME||(k===14&&id==='berry')){run(k===7?36:28,w);if(id!=='berry')r=.05*Math.cos(t*w)}
-      if(id==='deco'&&k===7){dy+=S(t*2.3)*7;dx+=S(t*.8)*10}if(id==='deco'&&k===14)s=1+.16*(.5+.5*S(t*3));break}
+    case 7:{if(ME){run(36,.55);r=.05*Math.cos(t*.55)}if(id==='deco'){dy+=S(t*2.3)*7;dx+=S(t*.8)*10}break}
+    case 14:if(id==='fr')dy-=Math.abs(S(t*3.1))*3;if(id==='me')r=S(t*1.4)*.02;if(id==='deco'){dy-=(t*14)%10;s=1+.05*S(t*3)}break;
     case 8:case 13:if(id==='me'){r=S(t*1.7)*.085;s=1+.015*S(t*3.4)}if(id==='deco'){if(k===8){dy+=S(t*1.4)*9;dx+=S(t*.7)*6}else s=1+.16*(.5+.5*S(t*3))}break;
     case 9:if(ME||id==='deco')walk(14,2.4);if(id==='deco')r=S(t*1.1)*.1;break;
-    case 11:case 15:if(ME||id==='deco')walk(k===11?20:26,2.6);if(id==='deco'&&k===15)r=S(t*3)*.05;break;
+    case 11:if(ME||id==='deco')walk(20,2.6);break;
+    case 15:if(ME||id==='fr')walk(26,2.6);break;
     case 12:if(id==='arm')r=1.5*(1-E((tt+.2)/1.6))+S(t*1.3)*.04;if(id==='deco')s=1+.16*(.5+.5*S(t*3));break;
-    case 16:if(id==='arm')r=tt<.25?-1.25:tt<.8?-1.25*(1-E((tt-.25)/.55)):S(t*1.2)*.04;
-      if(id==='deco'){const u=E((tt-.45)/2.4);dx+=u*120;dy-=u*70-S(t*1.3)*5*u;r=-.25*u}break;
+    case 16:{const ride=id==='me'||id==='fr'||id==='veh'||id==='berry'||id[0]==='w';if(ride){dx+=-150*(1-E(tt/2.6))+S(t*.6)*8;dy-=Math.abs(S(t*6.5))*1.6}
+      if(id[0]==='w')r=t*4.2;if(id==='berry')dy-=Math.max(0,S(t*3.2))*4;if(id==='deco'){s=.7+.5*(.5+.5*S(t*4.2));dx+=8*(.5+.5*S(t*4.2))}if(id==='deco2')r=0;break}
     case 17:if(id==='me')r=.05*E(tt/1.4);if(id==='ken')r=-.045*E(tt/1.4);if(id==='deco')s=1+.18*beat();break;
     case 18:if(id==='deco'){dx+=S(t*.5)*70;dy+=S(t*1.1)*5}break;
     case 19:if(id==='deco'){r=t*.5;s=1+.08*(.5+.5*S(t*3))}break;
@@ -1022,7 +1077,7 @@ function readHands(){
         const lab=r.handedness&&r.handedness[i]&&r.handedness[i][0]&&r.handedness[i][0].categoryName;let key=lab==='Left'?0:1;if(used[key])key=1-key;used[key]=true;
         const d=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y),size=d(lm[0],lm[9])||.1;
         const extF=([t,p])=>d(lm[t],lm[0])>d(lm[p],lm[0])*1.12;
-        const fg=[[8,6],[12,10],[16,14],[20,18]].map(extF),ext=fg.filter(Boolean).length,others=fg.slice(1).filter(Boolean).length,peace=fg[0]&&fg[1]&&!fg[2]&&!fg[3]&&d(lm[8],lm[12])/size>.2;
+        const fg=[[8,6],[12,10],[16,14],[20,18]].map(extF),ext=fg.filter(Boolean).length,others=fg.slice(1).filter(Boolean).length,peace=fg[0]&&fg[1]&&!fg[2]&&!fg[3]&&d(lm[8],lm[12])/size>.12;
         const pinch=d(lm[4],lm[8])/size<.3&&others>=2;
         const [cx,cy]=cover(lm[9].x,lm[9].y),[tx,ty]=cover(lm[8].x,lm[8].y),[ux,uy]=cover(lm[4].x,lm[4].y);
         const s=sm[key];if(s.x==null){s.x=cx;s.y=cy;s.tx=tx;s.ty=ty}
@@ -1173,6 +1228,8 @@ const scenes=[
    const el=document.createElement('div');el.className='bub'+(b.ic?' ic':'');el.dataset.who=b.who;
    if(b.ic){const i=document.createElement('i');i.textContent=b.txt;el.appendChild(i)}else{el.innerHTML='<b>'+(LWHO[b.who]||'')+'</b>';el.appendChild(document.createTextNode(b.txt))}
    box.appendChild(el);const x={el,b};this.bubs.push(x);this.placeBub(x);
+   if(!b.ic){const R=el.getBoundingClientRect(),hit=q=>{const r=q.getBoundingClientRect();return !(r.right<R.left-6||r.left>R.right+6||r.bottom<R.top-6||r.top>R.bottom+6)};
+     this.bubs=this.bubs.filter(y=>{if(y===x||!y.b.ic||!hit(y.el))return true;y.el.classList.remove('on');setTimeout(()=>y.el.remove(),500);return false})}
    requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('on')));if(AC)sfx.note(b.ic?1318.5:1568,AC.currentTime,.5,'sine',.025)},
  placeBub(x){const {el,b}=x,G=this.geo,L=b.lid&&this.lay?this.lay.find(l=>l.id===b.lid):null,s=this.sc;if(!G)return;let wx,wy;
    if(b.ax!=null){wx=(b.ax-G.cw/2)*s;wy=-(b.ay-G.ch/2)*s+G.yOff;if(L){wx+=L.dx;wy+=L.dy}}else if(L){wx=L.tx+L.dx;wy=L.ty+L.dy}else return;
@@ -1215,7 +1272,7 @@ const scenes=[
    if(this.lay&&this.st!=='silent'){const t=st-this.t0,s=this.sc;for(const L of this.lay){const m=lifeMot(this.k,L.id,t,this.aEnd);L.dx=m[0]*s;L.dy=-m[1]*s;L.c=Math.cos(m[2]);L.sn=Math.sin(m[2]);L.s=m[3]}
      for(let i=0;i<N;i++){const g=lgrp[i];if(g<0)continue;const L=this.lay[g],j=i*3,X=(lbase[j]-L.px)*L.s,Y=(lbase[j+1]-L.py)*L.s;tgt[j]=L.px+X*L.c+Y*L.sn+L.dx;tgt[j+1]=L.py-X*L.sn+Y*L.c+L.dy}}},
  tap(){if(this.locked())return;if(this.st==='years')this.step();else if(this.st==='peak')this.silence()},
- pinch(){this.tap()},wave(){this.tap()},peace(){this.tap()},
+ pinch(){this.tap()},wave(){this.tap()},peace(){this.tap()},palm(){this.tap()},
  release(h){if(h===null)return;if(!h||h.cam)this.tap()},
  nextOverride(){this.tap();return true}},
 
