@@ -187,6 +187,9 @@ body{-webkit-touch-callout:none}
 .bub[data-who=berry]{border-color:rgba(255,217,207,.6)}.bub[data-who=berry] b{color:#ffd9cf}
 .bub[data-who=ken] b{color:#cdbcf5}.bub[data-who=ken]{border-color:rgba(205,188,245,.5)}
 .bub::after{content:'';position:absolute;left:var(--tx);bottom:-6px;width:10px;height:10px;margin-left:-5px;background:rgba(18,10,22,.9);border-right:1px solid rgba(255,198,218,.36);border-bottom:1px solid rgba(255,198,218,.36);transform:rotate(45deg)}
+.bub.ic{padding:5px 10px 6px;border-radius:999px;font-size:19px;line-height:1;color:#ff7eb3;text-shadow:0 0 12px rgba(255,126,179,.7);scale:.6;transition:opacity .45s,translate .45s,scale .5s cubic-bezier(.34,1.8,.5,1)}
+.bub.ic.on{scale:1}.bub.ic i{display:inline-block;font-style:normal;animation:hb 1.15s ease-in-out infinite}
+@keyframes hb{0%,100%{transform:scale(1)}12%{transform:scale(1.22)}24%{transform:scale(1)}36%{transform:scale(1.14)}}
 #t2 .k2{opacity:0;transition:opacity 1.2s}#t2 .k2.on{opacity:1}
 #xh{position:fixed;left:50%;top:50%;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;border:1.5px solid rgba(255,247,250,.5);z-index:4;pointer-events:none;opacity:0;transition:opacity .4s,transform .3s,border-color .3s,box-shadow .3s}
 #xh::after{content:'';position:absolute;left:50%;top:50%;width:4px;height:4px;margin:-2px 0 0 -2px;border-radius:50%;background:#fff}
@@ -709,23 +712,23 @@ const LCAP={0:'Thế giới có thêm một người mê ngủ.',1:'Chưa biết
   21:'21 tuổi. Năm cuối. Vương miện này là của em.'};
 /* who says what (speech bubbles). [who, text, layer to follow, anchor x, anchor y] — anchors are in the 760×560 stage */
 const LTALK=(()=>{const cx=380,B=543.2;return {
-  0:[['berry','Berry trực đêm. Em cứ ngủ đi.']],
-  1:[['berry','Ơ… đợi Berry với!']],
-  2:[['mom','Từ từ thôi con.','fam',cx-118,B-470],['dad','Có bố đỡ rồi, cứ bước.','fam',cx+124,B-507]],
-  3:[['berry','Khóc hay không, Berry không kể đâu.']],
-  4:[['sis','Nắm tay chị nè.','fam',cx-94,B-418]],
-  5:[['berry','Berry không biết bơi. Berry canh khăn.']],
-  6:[['berry','Đi học vui nha. Berry đợi ở nhà.']],
-  8:[['berry','Thổi cho Berry một cái với.']],
-  10:[['dad','Đứng sát vào nào.','fam',cx-212,B-502],['mom','Cười lên con.','fam',cx-122,B-467]],
-  11:[['berry','Học bài đi, Berry dò bài cho.']],
-  14:[['berry','Lớn rồi vẫn ôm Berry ngủ. Berry giữ bí mật.']],
-  16:[['berry','Bay xa nhớ mang Berry theo nha.']],
-  17:[['berry','Ai đây? Để Berry kiểm tra.'],['ken','Chào em.']],
-  18:[['mom','📞 Đi xa nhớ ăn uống đầy đủ nha con.',null,120,B-440],['berry','Berry đi cùng. Hành lý quan trọng nhất.']],
-  19:[['berry','Texas to ghê. Berry bám em, không lạc đâu.']],
+  0:[['berry','Berry trực đêm. Chị Chip cứ ngủ đi.']],
+  1:[['berry','Ơ… chị Chip đợi Berry với!']],
+  2:[['mom','♥','fam',cx-118,B-470],['dad','♥','fam',cx+124,B-507]],
+  3:[['berry','Chị khóc hay không, Berry không kể đâu.']],
+  4:[['sis','♥','fam',cx-168,B-418],['sis','♥','fam',cx-94,B-418]],
+  5:[['berry','Berry không biết bơi. Berry canh khăn cho chị.']],
+  6:[['berry','Chị Chip đi học vui nha. Berry đợi ở nhà.']],
+  8:[['berry','Chị thổi cho Berry một cái với.']],
+  10:[['dad','♥','fam',cx-212,B-502],['mom','♥','fam',cx-122,B-467],['sis','♥','fam',cx+78,B-432],['sis','♥','fam',cx+158,B-427]],
+  11:[['berry','Chị học bài đi, Berry dò bài cho.']],
+  14:[['berry','Lớn rồi chị vẫn ôm Berry ngủ. Berry giữ bí mật.']],
+  16:[['berry','Chị bay xa nhớ mang Berry theo nha.']],
+  17:[['berry','Ai đây chị Chip? Để Berry kiểm tra.']],
+  18:[['mom','📞 ♥',null,120,B-440],['berry','Berry đi cùng chị. Hành lý quan trọng nhất.']],
+  19:[['berry','Texas to ghê. Berry bám chị, không lạc đâu.']],
   20:[['berry','Hai người cứ chơi, Berry giữ đồ.']],
-  21:[['berry','Berry vẫn ở đây.']]}})();
+  21:[['berry','21 tuổi rồi. Berry vẫn ở đây với chị.']]}})();
 const LWHO={berry:'Berry',mom:'Mẹ',dad:'Bố',sis:'Chị',ken:'Ken'};
 const chOf=k=>k<6?0:k<12?1:k<18?2:3;
 const LC={me:'#ffe9f2',fam:'#e9a9c8',dad:'#c9a9df',sis:'#f5c0d7',pr:'#ffbcd6',st:'#a9e4c6',gd:'#ffe0a3',ken:'#cdbcf5'};
@@ -1149,7 +1152,7 @@ const scenes=[
 {name:'birth',noCursor:true,
  enter(){this.st='black';this.k=0;this.lastStep=0;this.lastIn=0;this.hinted=0;this.lay=null;
    mode('glow');phys('calm');NZ=.45;swirl=0;galaxy();GAL.on=false;setColors(()=>BLACK);sfT=0;sfx.duck(true,0);say('','');
-   $('M').innerHTML='<canvas id="con"></canvas><div id="ageb"><u id="agech" class="off"></u><b id="agen">0</b><span id="agel">tuổi</span><em id="agec"></em><i id="aged">22 · 10 · 2005</i></div><div id="bubs"></div>';this.tq=[];this.bub=null;this.chN=-1;
+   $('M').innerHTML='<canvas id="con"></canvas><div id="ageb"><u id="agech" class="off"></u><b id="agen">0</b><span id="agel">tuổi</span><em id="agec"></em><i id="aged">22 · 10 · 2005</i></div><div id="bubs"></div>';this.tq=[];this.bubs=[];this.chN=-1;
    const cv=$('con');cv.width=Math.round(innerWidth*TPR);cv.height=Math.round(innerHeight*TPR);this.cg=cv.getContext('2d');this.cg.setTransform(TPR,0,0,TPR,0,0);
    this.layout();lifeLoad();later(2600,()=>this.dawn())},
  layout(){const P=portrait(),W=innerWidth,H=innerHeight,bx=P?[.08,.92]:[.25,.75],by=P?[.115,.46]:[.115,.58];
@@ -1161,14 +1164,16 @@ const scenes=[
    this.nodes=N2},
  hintTxt(){return camOn?COPY.chHint[chOf(this.k)]+COPY.chHintEnd:COPY.ageHintTap},
  chap(k){const c=chOf(k),u=$('agech');if(!u||c===this.chN)return;this.chN=c;u.classList.add('off');setTimeout(()=>{u.innerHTML='<small></small>';u.firstChild.textContent='Chương '+COPY.chNum[c];u.appendChild(document.createTextNode(COPY.chName[c]));u.classList.remove('off')},this.chN>0?650:60)},
- talk(k){const box=$('bubs');if(box)[...box.children].forEach(e=>{e.classList.remove('on');setTimeout(()=>e.remove(),500)});this.bub=null;this.tq=[];let at=st+(this.aEnd||1)+.6;const t0=at;
-   (LTALK[k]||[]).forEach(([who,txt,lid,ax,ay])=>{this.tq.push({at,who,txt,lid:lid!==undefined?lid:(who==='berry'||who==='ken'?who:null),ax,ay});at+=1.8+txt.length*.05});this.talkDur=this.tq.length?at-t0:0},
- showBub(b){const box=$('bubs');if(!box)return;[...box.children].forEach(e=>{e.classList.remove('on');setTimeout(()=>e.remove(),500)});
-   const el=document.createElement('div');el.className='bub';el.dataset.who=b.who;el.innerHTML='<b>'+(LWHO[b.who]||'')+'</b>';el.appendChild(document.createTextNode(b.txt));box.appendChild(el);this.bub={el,b};this.placeBub();
-   requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('on')));if(AC)sfx.note(b.who==='berry'?1568:1175,AC.currentTime,.5,'sine',.025)},
- placeBub(){const {el,b}=this.bub,G=this.geo,L=b.lid&&this.lay?this.lay.find(l=>l.id===b.lid):null,s=this.sc;if(!G)return;let wx,wy;
+ talk(k){const box=$('bubs');if(box)[...box.children].forEach(e=>{e.classList.remove('on');setTimeout(()=>e.remove(),500)});this.bubs=[];this.tq=[];let at=st+(this.aEnd||1)+.6;const t0=at;
+   (LTALK[k]||[]).forEach(([who,txt,lid,ax,ay])=>{const ic=who!=='berry';this.tq.push({at,who,txt,ic,lid:lid!==undefined?lid:(who==='berry'?who:null),ax,ay});at+=ic?.7:1.8+txt.length*.05});this.talkDur=this.tq.length?at-t0+1:0},
+ showBub(b){const box=$('bubs');if(!box)return;if(!b.ic)this.bubs=this.bubs.filter(x=>{if(x.b.ic)return true;x.el.classList.remove('on');setTimeout(()=>x.el.remove(),500);return false});
+   const el=document.createElement('div');el.className='bub'+(b.ic?' ic':'');el.dataset.who=b.who;
+   if(b.ic){const i=document.createElement('i');i.textContent=b.txt;el.appendChild(i)}else{el.innerHTML='<b>'+(LWHO[b.who]||'')+'</b>';el.appendChild(document.createTextNode(b.txt))}
+   box.appendChild(el);const x={el,b};this.bubs.push(x);this.placeBub(x);
+   requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('on')));if(AC)sfx.note(b.ic?1318.5:1568,AC.currentTime,.5,'sine',.025)},
+ placeBub(x){const {el,b}=x,G=this.geo,L=b.lid&&this.lay?this.lay.find(l=>l.id===b.lid):null,s=this.sc;if(!G)return;let wx,wy;
    if(b.ax!=null){wx=(b.ax-G.cw/2)*s;wy=-(b.ay-G.ch/2)*s+G.yOff;if(L){wx+=L.dx;wy+=L.dy}}else if(L){wx=L.tx+L.dx;wy=L.ty+L.dy}else return;
-   const [sx,sy]=toScreen(wx,wy),w=el.offsetWidth,h=el.offsetHeight,mid=innerWidth/2,side=sx<mid-24?-1:sx>mid+24?1:0,px=Math.max(8,Math.min(innerWidth-w-8,side>0?sx-24:side<0?sx-w+24:sx-w/2)),py=Math.max(8,sy-h-14);
+   const [sx,sy]=toScreen(wx,wy),w=el.offsetWidth,h=el.offsetHeight,mid=innerWidth/2,side=b.ic?0:sx<mid-24?-1:sx>mid+24?1:0,px=Math.max(8,Math.min(innerWidth-w-8,side>0?sx-24:side<0?sx-w+24:sx-w/2)),py=Math.max(8,sy-h-14);
    el.style.transform=`translate(${px.toFixed(1)}px,${py.toFixed(1)}px)`;el.style.setProperty('--tx',Math.max(14,Math.min(w-14,sx-px)).toFixed(1)+'px')},
  dawn(){if(S!==this)return;this.st='years';this.lastIn=st;const g=this.cg;
    g.strokeStyle='rgba(255,214,230,.07)';g.lineWidth=1;this.nodes.forEach(n=>{[n.p,n.p2].forEach(pi=>{const q=pi!=null&&pi>=0?this.nodes[pi]:null;if(q){g.beginPath();g.moveTo(q.x,q.y);g.lineTo(n.x,n.y);g.stroke()}})});
@@ -1200,13 +1205,13 @@ const scenes=[
    if(AC){const pent=[0,2,4,7,9],m=Math.round(k*13/21),f=220*Math.pow(2,(pent[m%5]+12*Math.floor(m/5))/12);sfx.note(f,AC.currentTime,2.6,'sine',k===21?.08:.055);if(k===21)[f/2,f*1.5].forEach(x=>sfx.note(x,AC.currentTime+.04,4,'sine',.04))}
    if(k===21){this.st='peak';this.tp=st;say('','');later(700,()=>{$('con').classList.add('done');const l=$('agel');if(l)l.textContent='tuổi · Thiên Bình';const d2=$('aged');if(d2)d2.textContent='22 · 10 · 2026 — ngày cuối của mùa Thiên Bình';swell(1.0,2400)});
      later(5200,()=>{if(S===this&&this.st==='peak')say('','',COPY.tapNext,0)})}},
- silence(){if(this.st==='silent')return;this.st='silent';clearT();say('','');$('ageb').classList.remove('on');this.tq=[];this.bub=null;{const bx=$('bubs');if(bx)bx.innerHTML=''}$('con').classList.remove('on');this.lay=null;
+ silence(){if(this.st==='silent')return;this.st='silent';clearT();say('','');$('ageb').classList.remove('on');this.tq=[];this.bubs=[];{const bx=$('bubs');if(bx)bx.innerHTML=''}$('con').classList.remove('on');this.lay=null;
    for(let i=0;i<N;i++){const j=i*3;tgt[j]=(Math.random()-.5)*VW*1.3;tgt[j+1]=(Math.random()-.5)*VH*1.3;tgt[j+2]=-10-Math.random()*30;const m=seed[i]<.15?.16:0;tcol[j]=m;tcol[j+1]=m*.8;tcol[j+2]=m*.9}
    assemble(ORD.random,{spread:1.2,travel:2.4,curl:.3,lift:-3,after:'drift',nz:.5});sfx.duck(true,0);later(2900,()=>{if(S===this)goName('letter')})},
  update(dt){const T=TEMPO;
    if(this.st==='years'&&!AUTO&&!this.locked()){const idle=st-this.lastIn;if(idle>7*T&&this.hinted<3&&this.k<21&&this.k>=2){this.hinted++;this.lastIn=st;say('','',this.hintTxt(),0)}}
    if(this.tq&&this.tq.length&&st>=this.tq[0].at&&this.st!=='silent')this.showBub(this.tq.shift());
-   if(this.bub&&this.st!=='silent')this.placeBub();
+   if(this.bubs&&this.bubs.length&&this.st!=='silent')this.bubs.forEach(x=>this.placeBub(x));
    if(this.lay&&this.st!=='silent'){const t=st-this.t0,s=this.sc;for(const L of this.lay){const m=lifeMot(this.k,L.id,t,this.aEnd);L.dx=m[0]*s;L.dy=-m[1]*s;L.c=Math.cos(m[2]);L.sn=Math.sin(m[2]);L.s=m[3]}
      for(let i=0;i<N;i++){const g=lgrp[i];if(g<0)continue;const L=this.lay[g],j=i*3,X=(lbase[j]-L.px)*L.s,Y=(lbase[j+1]-L.py)*L.s;tgt[j]=L.px+X*L.c+Y*L.sn+L.dx;tgt[j+1]=L.py-X*L.sn+Y*L.c+L.dy}}},
  tap(){if(this.locked())return;if(this.st==='years')this.step();else if(this.st==='peak')this.silence()},
