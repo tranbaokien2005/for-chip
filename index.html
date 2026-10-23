@@ -799,7 +799,7 @@ const scenes=[
    g.strokeStyle='rgba(255,214,230,.07)';g.lineWidth=1;this.nodes.forEach(n=>{[n.p,n.p2].forEach(pi=>{const q=pi!=null&&pi>=0?this.nodes[pi]:null;if(q){g.beginPath();g.moveTo(q.x,q.y);g.lineTo(n.x,n.y);g.stroke()}})});this.nodes.forEach(n=>{g.fillStyle='rgba(255,220,235,.34)';g.beginPath();g.arc(n.x,n.y,n.m?2.6:1.7,0,7);g.fill()});$('con').classList.add('on');
    this.girl(0,true);$('ageb').classList.add('on');if(AC)sfx.note(98,AC.currentTime,4.5,'sine',.08);
    later(3200,()=>{if(S===this&&this.k<3)say('','',camOn&&!isMobile?'✊ nắm rồi mở tay · hoặc chạm để thêm một tuổi':'chạm để thêm một tuổi',0)})},
- girl(a,first){const P=portrait(),fitH=P?.33:.34,b=P?.68:.60,yOff=(.5-b)*VH+.47*fitH*VH,br=.8+.2*a/21;
+ girl(a,first){const P=portrait(),fitH=P?.33:.34,b=P?.68:.60,yOff=(.5-b)*VH+.47*fitH*VH,br=(.8+.2*a/21)*(+(new URLSearchParams(location.search).get('gb'))||Math.min(1,9000/N));
    fromCanvas(g=>drawGirl(g,420,560,a),420,560,1,i=>{const c=seed[i]<.45?PAL.pearl:seed[i]<.9?PAL.blush:PAL.rose;return [c[0]*br*.9,c[1]*br*.9,c[2]*br*.9]},yOff,1,fitH);
    for(let i=0;i<N;i++)if(seed[i]<.1){const j=i*3;tgt[j]=(Math.random()-.5)*VW*1.25;tgt[j+1]=(Math.random()-.5)*VH*1.25;tgt[j+2]=-8-Math.random()*20;const m=.18+.25*Math.random();tcol[j]=m;tcol[j+1]=m*.85;tcol[j+2]=m*.92}
    if(first)assemble(ORD.radial,{spread:2.4*TEMPO,travel:2.8*TEMPO,jitter:.3,curl:.2,lift:3,after:'hold',nz:.3});
@@ -857,7 +857,7 @@ const scenes=[
    else if(this.st==='write'&&ASM.on)ASM.speed=3},
  pinch(){if(this.st==='years')this.step()},
  fist(h){if(this.st==='gwait')this.gather(h)},
- release(h){if(h===null)return;if(this.st==='years'){if(h&&h.cam)this.step();return}if(this.st==='gather'||this.st==='held')this.releaseNow()},
+ release(h){if(h===null)return;if(this.st==='years'){if(!h||h.cam)this.step();return}if(this.st==='gather'||this.st==='held')this.releaseNow()},
  nextOverride(){const s=this.st;if(s==='black'){clearT();this.dawn();return true}
    if(s==='years'){this.step();return true}if(s==='peak')return true;
    if(s==='gwait'){this.gather(null);return true}if(s==='gather'||s==='held'){this.releaseNow();return true}
