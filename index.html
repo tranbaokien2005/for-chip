@@ -1127,11 +1127,21 @@ const sfx={
     rv.buffer=b;this.rv=AC.createGain();this.rv.gain.value=.45;rv.connect(master);this.rv.connect(rv);this.pad()},
   note(f,t,dur,type='sine',vol=.2,rev=true){if(!AC)return;const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(master);if(rev)g.connect(this.rv);o.start(t);o.stop(t+dur+.05)},
   chime(m=1){if(!AC)return;const sc=[0,2,4,7,9,12,14];const f=659.25*Math.pow(2,sc[Math.floor(Math.random()*sc.length)]/12)*m;this.note(f,AC.currentTime,1.6,'sine',.06)},
-  pad(){const chords=[[261.6,329.6,392,493.9],[220,261.6,329.6,392],[174.6,220,261.6,329.6],[196,246.9,293.7,392]];let k=0;
-    const lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.value=950;const pg=AC.createGain();pg.gain.value=.05;lp.connect(pg);pg.connect(master);pg.connect(this.rv);this.padGain=pg;
-    const play=()=>{const t=AC.currentTime;chords[k++%4].forEach(f=>[f/2,f].forEach((ff,j)=>{const o=AC.createOscillator(),g=AC.createGain();o.type=j?'sine':'triangle';o.frequency.value=ff;o.detune.value=(Math.random()-.5)*12;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.5,t+2.5);g.gain.linearRampToValueAtTime(0,t+8.6);o.connect(g);g.connect(lp);o.start(t);o.stop(t+9)}));
-      const arp=chords[(k-1)%4];for(let s=0;s<8;s++)this.note(arp[(s*3)%4]*2,t+s*1+(s%2)*.5,2.4,'sine',.032)};
-    play();setInterval(play,8000)},
+  pad(){/* gentle, happy music-box lullaby (original): I–V–vi–IV in C, ~97 bpm, bright and soft */
+    const lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.value=6000;const pg=AC.createGain(),amp=AC.createGain();pg.gain.value=.05;amp.gain.value=6;lp.connect(amp);amp.connect(pg);pg.connect(master);const sd=AC.createGain();sd.gain.value=.3;pg.connect(sd);sd.connect(this.rv);this.padGain=pg;
+    const N=n=>440*Math.pow(2,(n-69)/12),B=.62;
+    const box=(f,t,d,v)=>[[1,1],[2,.25],[3,.07],[4.1,.03]].forEach(([m,a],q)=>{const o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=f*m;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v*a,t+.005);g.gain.exponentialRampToValueAtTime(.0001,t+d*(q?.35:1));o.connect(g);g.connect(lp);o.start(t);o.stop(t+d+.05)});
+    const pluck=(f,t,d,v)=>{const o=AC.createOscillator(),g=AC.createGain();o.type='triangle';o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(lp);o.start(t);o.stop(t+d+.05)};
+    const chords=[[48,55,64],[43,50,59],[45,52,60],[41,48,57],[48,55,64],[43,50,59],[41,48,57],[43,50,59]];
+    const mel=[[[64,0,1],[62,1,.5],[60,1.5,.5],[64,2,1],[67,3,1]],[[62,0,1.5],[59,1.5,.5],[62,2,2]],[[60,0,1],[64,1,1],[69,2,1],[67,3,1]],[[65,0,1.5],[64,1.5,.5],[60,2,2]],
+               [[64,0,1],[67,1,1],[72,2,1],[71,3,.5],[69,3.5,.5]],[[67,0,1.5],[65,1.5,.5],[62,2,2]],[[69,0,1],[67,1,1],[65,2,1],[64,3,1]],[[62,0,1],[64,1,.5],[65,1.5,.5],[67,2,2]]];
+    let next=AC.currentTime+.4,bar=0;
+    const sched=now=>{while(next<now+1.4){const t0=next,i=bar%8,ch=chords[i],calm=Math.floor(bar/8)%3===2;
+        pluck(N(ch[0]),t0,B*1.7,.42);pluck(N(ch[1]),t0+2*B,B*1.5,.3);
+        for(let e=0;e<8;e++)box(N(ch[[0,1,2,1,0,1,2,1][e]]+12),t0+e*B/2,1,calm?.075:.06);
+        mel[i].forEach(([n,o,d])=>{if(calm&&o>0)return;box(N(n+12),t0+o*B,Math.max(.9,d*B*1.7),.2)});
+        next+=4*B;bar++}};
+    this.musicSched=sched;sched(AC.currentTime);setInterval(()=>sched(AC.currentTime),300)},
   duck(on,l=.01){if(this.padGain&&AC)this.padGain.gain.setTargetAtTime(on?l:.05,AC.currentTime,on&&l===0?.2:.6)},
   birthday(){if(!AC)return;const n={G4:392,A4:440,B4:493.9,C5:523.3,D5:587.3,E5:659.3,F5:698.5,G5:784};
     const s=[['G4',.75],['G4',.25],['A4',1],['G4',1],['C5',1],['B4',2],['G4',.75],['G4',.25],['A4',1],['G4',1],['D5',1],['C5',2],['G4',.75],['G4',.25],['G5',1],['E5',1],['C5',1],['B4',1],['A4',2],['F5',.75],['F5',.25],['E5',1],['C5',1],['D5',1],['C5',3]];
