@@ -561,7 +561,7 @@ function drawGirl(g,W,H,a){
 
 /* ---- a life in 21 taps: real silhouettes (encrypted) + simple props ---- */
 const LIFE={img:null,p:null,R:{kid5:[0,0,291,320],c024:[295,0,124,320],c025:[423,0,140,320],c023:[567,0,159,320],c092:[730,0,125,320],k118:[859,0,125,320],c068:[992,0,242,320]}};
-function lifeLoad(){if(LIFE.p)return LIFE.p;return LIFE.p=(async()=>{const k=await skyKey();const r=await fetch(MEMBASE+'life.bin');if(!r.ok)throw r.status;
+function lifeLoad(){if(LIFE.p)return LIFE.p;return LIFE.p=(async()=>{const k=await skyKey();const r=await fetch(MEMBASE+'life.bin?v=20');if(!r.ok)throw r.status;
   const b=new Uint8Array(await r.arrayBuffer());const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:b.slice(0,12)},k,b.slice(12));LIFE.img=await createImageBitmap(new Blob([pt],{type:'image/png'}))})().catch(()=>{})}
 const LCAP={0:'Chào đời.',1:'Biết bò.',2:'Tập đi.',3:'Đi mẫu giáo.',4:'Đi chơi với chị.',5:'Nghịch nước.',6:'Vào lớp Một.',10:'Cả nhà.',11:'Lên cấp Hai.',15:'Áo dài trắng.',17:'Năm 2023. Gặp anh.',18:'Sang Mỹ. Năm nhất ở Miami.',19:'Chuyển về Texas.',20:'Orlando, cùng anh.',21:'Năm cuối.'};
 const LC={me:'#ffe9f2',mom:'#e9a9c8',dad:'#c9a9df',sis:'#f5c0d7',pr:'#ffbcd6',st:'#a9e4c6',gd:'#ffe0a3',ken:'#cdbcf5'};
@@ -603,7 +603,7 @@ function lAoDai(g,cx){lPut(g,lgC(15,LC.me),cx);g.fillStyle=LC.me;const top=LB-49
   [-1,1].forEach(s=>{g.beginPath();g.moveTo(cx+s*4,wy-20);g.lineTo(cx+s*30,wy-12);g.quadraticCurveTo(cx+s*44,wy+120,cx+s*50,LB-28);g.lineTo(cx+s*8,LB-22);g.closePath();g.fill()});
   g.save();g.globalCompositeOperation='destination-out';g.lineWidth=3;[-1,1].forEach(s=>{g.beginPath();g.moveTo(cx+s*33,wy+30);g.lineTo(cx+s*44,LB-40);g.stroke()});g.restore();
   g.fillStyle=LC.pr;const hx=cx+82,hy=LB-205;g.beginPath();g.moveTo(hx-40,hy);g.quadraticCurveTo(hx,hy-34,hx+40,hy);g.quadraticCurveTo(hx,hy+8,hx-40,hy);g.fill()}
-function drawLife(g,W,H,k){LB=H*.97;const cx=W/2,L=!!LIFE.img;g.save();g.lineCap='round';g.lineJoin='round';
+function drawLife(g,W,H,k){LB=H*.97;const cx=W/2,L=!!LIFE.img&&LIFE.img.width>=1230;g.save();g.lineCap='round';g.lineJoin='round';
   const me=a=>lPut(g,lgC(a,LC.me),cx);
   lFlower(g,k,W);g.fillStyle=LC.pr;g.strokeStyle=LC.pr;
   switch(k){
