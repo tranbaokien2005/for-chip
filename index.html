@@ -880,7 +880,7 @@ const scenes=[
    g.strokeStyle='rgba(255,214,230,.07)';g.lineWidth=1;this.nodes.forEach(n=>{[n.p,n.p2].forEach(pi=>{const q=pi!=null&&pi>=0?this.nodes[pi]:null;if(q){g.beginPath();g.moveTo(q.x,q.y);g.lineTo(n.x,n.y);g.stroke()}})});this.nodes.forEach(n=>{g.fillStyle='rgba(255,220,235,.34)';g.beginPath();g.arc(n.x,n.y,n.m?2.6:1.7,0,7);g.fill()});$('con').classList.add('on');
    this.girl(0,true);$('ageb').classList.add('on');this.cap(0);if(AC)sfx.note(98,AC.currentTime,4.5,'sine',.08);
    later(3200,()=>{if(S===this&&this.k<3)say('','',camOn&&!isMobile?'✊ nắm rồi mở tay · hoặc chạm để thêm một tuổi':'chạm để thêm một tuổi',0)})},
- girl(a,first){const P=portrait(),fitH=P?.32:.33,b=P?.655:.57,yOff=(.5-b)*VH+.47*fitH*VH,br=(.8+.2*a/21)*(+(new URLSearchParams(location.search).get('gb'))||Math.min(1,9000/N));
+ girl(a,first){const P=portrait(),fitH=P?.32:.33,b=P?.655:.57,yOff=(.5-b)*VH+.47*fitH*VH,br=(.8+.2*a/21)*(+(new URLSearchParams(location.search).get('gb'))||Math.min(1,11000/N));
    fromCanvas(g=>drawLife(g,760,560,a),760,560,.98,null,yOff,br*.95,fitH);
    for(let i=0;i<N;i++)if(seed[i]<.1){const j=i*3;tgt[j]=(Math.random()-.5)*VW*1.25;tgt[j+1]=(Math.random()-.5)*VH*1.25;tgt[j+2]=-8-Math.random()*20;const m=.18+.25*Math.random();tcol[j]=m;tcol[j+1]=m*.85;tcol[j+2]=m*.92}
    if(first)assemble(ORD.radial,{spread:2.4*TEMPO,travel:2.8*TEMPO,jitter:.3,curl:.2,lift:3,after:'hold',nz:.3});
@@ -896,7 +896,7 @@ const scenes=[
    const b=$('agen');if(b){b.textContent=k;b.classList.add('tick');setTimeout(()=>b.classList.remove('tick'),260)}const d=$('aged');if(d)d.textContent='22 · 10 · '+(2005+k);this.cap(k);
    if(k===3)say('','');sfT=.3*k/21;
    if(AC){const pent=[0,2,4,7,9],m=Math.round(k*13/21),f=220*Math.pow(2,(pent[m%5]+12*Math.floor(m/5))/12);sfx.note(f,AC.currentTime,2.6,'sine',k===21?.08:.055);if(k===21)[f/2,f*1.5].forEach(x=>sfx.note(x,AC.currentTime+.04,4,'sine',.04))}
-   if(k===21){this.st='peak';later(700,()=>{$('con').classList.add('done');const l=$('agel');if(l)l.textContent='tuổi · Thiên Bình';const d2=$('aged');if(d2)d2.textContent='22 · 10 · 2026 — ngày cuối của mùa Thiên Bình';swell(1.0,2400)});later(5200,()=>this.peak())}},
+   if(k===21){this.st='peak';say('','');later(700,()=>{$('con').classList.add('done');const l=$('agel');if(l)l.textContent='tuổi · Thiên Bình';const d2=$('aged');if(d2)d2.textContent='22 · 10 · 2026 — ngày cuối của mùa Thiên Bình';swell(1.0,2400)});later(5200,()=>this.peak())}},
  update(dt){const h=hands[0],T=TEMPO,cam=!!(h&&h.cam),touch=!!(h&&!h.cam&&ptr.down);
    if(this.st==='years'){const idle=st-this.lastIn;if(idle>9*T&&this.hinted<2&&this.k<21){this.hinted++;this.lastIn=st-3;say('','',camOn&&!isMobile?'✊ nắm rồi mở tay · hoặc chạm để thêm một tuổi':'chạm để thêm một tuổi',0)}
      if(idle>14*T){this.step();this.lastIn=st-10*T}}
