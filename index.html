@@ -951,7 +951,7 @@ const scenes=[
      if(ptr.down&&(!h||!h.cam)){const L=this.last;if(L){const dx=ptr.sx-L[0],dy=ptr.sy-L[1],k=(isMobile?.0055:.0035)*camera.fov/56;if(Math.abs(dx)+Math.abs(dy)>0){this.vy=dx*k/Math.max(dt,.016);this.vp=dy*k/Math.max(dt,.016);this.yaw+=dx*k;this.pitch+=dy*k;inp=true}}this.last=[ptr.sx,ptr.sy]}
      else{this.last=null;if(h&&h.cam){const x=h.tx/innerWidth,y=h.ty/innerHeight;if(x<.2)this.vy=(.2-x)*3.2;else if(x>.8)this.vy=-(x-.8)*3.2;if(y<.18)this.vp=(.18-y)*2;else if(y>.82)this.vp=-(y-.82)*2;inp=true}
        this.yaw+=this.vy*dt;this.pitch+=this.vp*dt;this.vy*=Math.pow(.05,dt);this.vp*=Math.pow(.05,dt)}
-     this.idle=inp||ptr.down?0:this.idle+dt;if(this.idle>4&&this.st==='roam')this.yaw-=.016*dt}
+     const busy=inp||ptr.down||this.hov>=0||performance.now()-ptr.last<2500;this.idle=busy?0:this.idle+dt;if(this.idle>5&&this.st==='roam')this.yaw-=.01*dt}
    this.pitch=Math.max(-.85,Math.min(.85,this.pitch));
    if(this.anim){const a=this.anim,u=Math.min(1,(st-a.t)/1.3),e=u*u*(3-2*u);this.yaw=a.y0+(a.y1-a.y0)*e;this.pitch=a.p0+(a.p1-a.p0)*e;if(u>=1){this.anim=null;this.openStar(a.i)}}
    camera.rotation.order='YXZ';camera.rotation.set(this.pitch,this.yaw,0);camera.updateMatrixWorld();
@@ -960,7 +960,7 @@ const scenes=[
      if(v.z>1||Math.abs(v.x)>1.2||Math.abs(v.y)>1.2){d.style.visibility='hidden'}else{d.style.visibility='';d.style.transform=`translate(${(v.x+1)/2*innerWidth}px,${(1-v.y)/2*innerHeight}px) translate(-50%,-50%)`}});
    // hover: hand index tip, or mouse on desktop
    let cx=-1,cy=-1;if(h&&h.cam){cx=h.tx;cy=h.ty}else if(!isMobile&&ptr.on&&!ptr.down){cx=ptr.sx;cy=ptr.sy}
-   const hv=this.open<0&&cx>=0&&this.st==='roam'?this.pick(cx,cy,isMobile?46:40):-1;
+   const hv=this.open<0&&cx>=0&&this.st==='roam'?this.pick(cx,cy,isMobile?58:50):-1;
    if(hv!==this.hov){this.hov=hv;this.dw=0;memU.uHov.value=hv;if(hv>=0)sfx.chime(1.6)}
    if(hv>=0&&h&&h.cam){this.dw+=dt;if(this.dw>1.3){this.dw=-9;this.openStar(hv)}}},
  pick(x,y,R){let best=-1,bd=R*R;const v=new THREE.Vector3();
@@ -983,7 +983,7 @@ const scenes=[
  random(){if(this.open>=0||this.anim||this.st!=='roam')return;const L=[];for(let i=0;i<MN;i++)if(!this.seen.has(i))L.push(i);const i=(L.length?L:[...Array(MN).keys()])[Math.floor(Math.random()*(L.length||MN))];
    const x=memPos[i*3],y=memPos[i*3+1],z=memPos[i*3+2],d=Math.hypot(x,y,z);let y1=Math.atan2(-x,-z);while(y1-this.yaw>Math.PI)y1-=6.2832;while(y1-this.yaw<-Math.PI)y1+=6.2832;
    this.vy=this.vp=0;this.anim={t:st,y0:this.yaw,y1,p0:this.pitch,p1:Math.asin(y/d),i}},
- tap(){if(this.open>=0){this.closeStar();return}if(this.st!=='roam')return;const i=this.pick(ptr.sx,ptr.sy,isMobile?46:40);if(i>=0)this.openStar(i)},
+ tap(){if(this.open>=0){this.closeStar();return}if(this.st!=='roam')return;let i=this.pick(ptr.sx,ptr.sy,isMobile?58:50);if(i<0&&this.hov>=0)i=this.hov;if(i>=0)this.openStar(i)},
  pinch(h){if(this.open>=0){this.closeStar();return}if(this.st!=='roam'||!h)return;const i=this.pick(h.tx,h.ty,60);if(i>=0)this.openStar(i)},
  fist(h){if(this.open>=0&&h&&h.cam)this.closeStar()},
  release(){},
