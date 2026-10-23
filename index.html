@@ -560,7 +560,7 @@ function drawGirl(g,W,H,a){
   g.restore()}
 
 /* ---- a life in 21 taps: real silhouettes (encrypted) + simple props ---- */
-const LIFE={img:null,p:null,R:{kid5:[0,0,291,320],c024:[295,0,124,320],c025:[423,0,140,320],c023:[567,0,159,320],c092:[730,0,125,320],k118:[859,0,125,320]}};
+const LIFE={img:null,p:null,R:{kid5:[0,0,291,320],c024:[295,0,124,320],c025:[423,0,140,320],c023:[567,0,159,320],c092:[730,0,125,320],k118:[859,0,125,320],c068:[992,0,242,320]}};
 function lifeLoad(){if(LIFE.p)return LIFE.p;return LIFE.p=(async()=>{const k=await skyKey();const r=await fetch(MEMBASE+'life.bin');if(!r.ok)throw r.status;
   const b=new Uint8Array(await r.arrayBuffer());const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:b.slice(0,12)},k,b.slice(12));LIFE.img=await createImageBitmap(new Blob([pt],{type:'image/png'}))})().catch(()=>{})}
 const LCAP={0:'Chào đời.',1:'Biết bò.',2:'Tập đi.',3:'Đi mẫu giáo.',4:'Đi chơi với chị.',5:'Nghịch nước.',6:'Vào lớp Một.',10:'Cả nhà.',11:'Lên cấp Hai.',15:'Áo dài trắng.',17:'Năm 2023. Gặp anh.',18:'Sang Mỹ. Năm nhất ở Miami.',19:'Chuyển về Texas.',20:'Orlando, cùng anh.',21:'Năm cuối.'};
@@ -634,7 +634,7 @@ function drawLife(g,W,H,k){LB=H*.97;const cx=W/2,L=!!LIFE.img;g.save();g.lineCap
     case 18:{if(L)lTile(g,'c092',cx,488);else me(18);g.fillStyle=LC.st;g.strokeStyle=LC.st;lPalm(g,cx-215,300);lPalm(g,cx-150,220);g.fillStyle=LC.pr;lPlane(g,cx+150,LB-440,26);break}
     case 19:{if(L)lTile(g,'c023',cx,490);else me(19);g.fillStyle=LC.gd;lStar(g,cx+165,LB-400,34);break}
     case 20:{if(L){lTile(g,'c024',cx-72,488);lTile(g,'k118',cx+92,522,.72)}else{me(20)}g.strokeStyle=LC.gd;g.fillStyle=LC.gd;lFireworks(g,cx-200,LB-420,40);lFireworks(g,cx+215,LB-460,30);break}
-    case 21:{let t;if(L)t=lTile(g,'c025',cx,494);else{me(21);break}g.fillStyle=LC.gd;const hx=t.x+t.w*.53,hy=t.y+16,w=27;
+    case 21:{let t;if(L)t=lTile(g,'c068',cx,468);else{me(21);break}g.fillStyle=LC.gd;const hx=t.x+t.w*.47,hy=t.y+12,w=30;
       g.beginPath();g.moveTo(hx-w,hy);g.lineTo(hx-w*1.1,hy-26);g.lineTo(hx-w*.5,hy-11);g.lineTo(hx,hy-34);g.lineTo(hx+w*.5,hy-11);g.lineTo(hx+w*1.1,hy-26);g.lineTo(hx+w,hy);g.closePath();g.fill();break}
   }
   g.restore()}
