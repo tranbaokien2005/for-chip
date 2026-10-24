@@ -144,7 +144,7 @@ body{-webkit-touch-callout:none}
 #pol.on{opacity:1;pointer-events:auto}
 #pol:not(.on) *,#hud:not(.on) *{pointer-events:none!important}
 #pol .card{background:#fbf7f2;padding:12px 12px 52px;border-radius:5px;box-shadow:0 30px 80px rgba(0,0,0,.6);transform:rotate(-2deg);position:relative;max-width:min(88vw,620px)}
-#pol .card img{display:block;max-width:100%;max-height:60vh;border-radius:2px}
+#pol .card img{-webkit-touch-callout:default;-webkit-user-select:auto;user-select:auto;pointer-events:auto;display:block;max-width:100%;max-height:60vh;border-radius:2px}
 #pol .card span{position:absolute;left:0;right:0;bottom:13px;text-align:center;font:italic 300 21px Fraunces,serif;color:#3a2a33}
 #pol .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 #pol .tip{font:400 12px Inter;color:rgba(255,247,250,.55);letter-spacing:.06em;text-align:center}
@@ -1608,6 +1608,17 @@ $('boothBtn').onclick=e=>{e.stopPropagation();boothFrom='end';goName('booth')};
 $('shutter').onclick=e=>{e.stopPropagation();if(S.name==='booth')S.countdown()};
 $('polRetake').onclick=e=>{e.stopPropagation();$('pol').classList.remove('on');if(S.name==='booth'){S.busy=false;$('booth').classList.add('on')}};
 $('polDone').onclick=e=>{e.stopPropagation();$('pol').classList.remove('on');if(S.name==='booth')S.leave();else goName('gift')};
+/* save the polaroid: built synchronously inside the click so Safari keeps the user gesture */
+function shotBlob(c){const u=c.toDataURL('image/jpeg',.92),b=atob(u.slice(u.indexOf(',')+1)),a=new Uint8Array(b.length);for(let i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return new Blob([a],{type:'image/jpeg'})}
+function savedTip(msg){const t=$('polTip');if(t)t.textContent=msg}
+function downloadBlob(blob,name){const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.rel='noopener';a.style.display='none';document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(u);a.remove()},8000);savedTip(isMobile?'✓ Đã lưu ảnh':'✓ Đã lưu vào thư mục Downloads')}
+function saveCanvas(c){let blob;try{blob=shotBlob(c)}catch(e){console.warn('[chip] save',e);return}
+  const d=new Date(),name='chip-21-'+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0')+String(d.getSeconds()).padStart(2,'0')+'.jpg';
+  const touch=isIOS||matchMedia('(pointer:coarse)').matches;
+  if(touch&&navigator.share&&navigator.canShare){try{const f=new File([blob],name,{type:'image/jpeg'});
+    if(navigator.canShare({files:[f]})){navigator.share({files:[f],title:'For Chip ✦'}).then(()=>savedTip('✓ Xong rồi')).catch(e=>{if(!e||e.name!=='AbortError')downloadBlob(blob,name)});return}}catch(e){}}
+  downloadBlob(blob,name)}
 $('polSave').onclick=e=>{e.stopPropagation();if(S.canvas)saveCanvas(S.canvas)};
 
 /* ---------------------------- photobooth ---------------------------- */
