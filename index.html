@@ -110,6 +110,7 @@ body{-webkit-touch-callout:none}
 #ageb span{display:block;margin-top:6px;font:500 12px Inter;letter-spacing:.42em;padding-left:.42em;color:rgba(255,214,230,.9);text-transform:uppercase;text-shadow:0 1px 10px rgba(0,0,0,.9)}
 #ageb em{display:block;margin-top:10px;min-height:1.25em;font:400 clamp(17px,1.6vw,21px)/1.25 Fraunces,Georgia,serif;color:#fff1f6;text-shadow:0 0 18px rgba(255,126,179,.55),0 1px 10px rgba(0,0,0,.9);transition:opacity .25s}
 #ageb em.off{opacity:0}
+#ageb em.heart{color:#ff9cc6;font-size:clamp(26px,2.6vw,32px);line-height:1;text-shadow:0 0 18px rgba(255,126,179,.9)}
 #ageb i{display:block;margin-top:8px;font:italic 300 15px Fraunces,Georgia,serif;color:rgba(255,247,250,.82);text-shadow:0 1px 10px rgba(0,0,0,.9)}
 #con.done{filter:drop-shadow(0 0 6px rgba(255,160,205,.85))}
 #age{position:fixed;left:0;right:0;text-align:center;font:italic 300 clamp(26px,4vw,42px) Fraunces,Georgia,serif;color:var(--blush);opacity:0;transition:opacity 2.2s;pointer-events:none;letter-spacing:.04em;text-shadow:0 0 26px rgba(255,126,179,.5);z-index:3}
@@ -251,7 +252,7 @@ body{-webkit-touch-callout:none}
   <div class="date">22 · 10 · 2026</div>
   <h1>Gửi <i>Chip</i></h1>
   <div class="sky">bầu trời đầy sao này</div>
-  <p id="introP">mở bằng tay nhé.</p>
+  <p id="introP">tặng vợ</p>
   <button class="pill big" id="goCam">Mở quà</button>
   <button class="link" id="goTap">không bật camera? chạm để xem</button>
   <div class="fine">bật tiếng, ngồi chỗ có đèn nhé 🔊</div>
@@ -318,8 +319,8 @@ const COPY = {
   memHintTap: 'chạm để xem tiếp',
   memEnd: 'còn nữa…',
   letterPre: 'Một phút nghiêm túc.',
-  letterHintCam: '✋ xoè tay giữ một nhịp để lật trang · hoặc chạm',
-  letterOpenCam: '✋ xoè tay giữ một nhịp để mở thư · hoặc chạm',
+  letterHintCam: '✊ nắm rồi ✋ mở tay để lật trang · hoặc chạm',
+  letterOpenCam: '✊ nắm rồi ✋ mở tay để mở thư · hoặc chạm',
   letterHintTap: 'chạm để đọc tiếp',
   letterEnd: 'Giờ tới lượt em ước.',
   wish1: 'Nhắm mắt, ước một điều.',
@@ -338,7 +339,7 @@ const COPY = {
   rev0: 'Còn một món nữa.',
   rev0b: 'Mở đi.',
   revNudge: 'Mở đi mà.',
-  revHintCam: '✊ nắm tay · hoặc chạm để mở',
+  revHintCam: '✊ nắm rồi ✋ mở tay để mở quà · hoặc chạm',
   revHintTap: 'chạm để mở',
   rev: [
     ['Quà thật thì phải đưa tận tay.', ''],
@@ -365,11 +366,11 @@ const COPY = {
   booth2: 'Luật rồi.',
   boothHint: '',
   boothShutter: 'cười lên · chạm để chụp',
-  kept: 'Xinh ghê. Lưu lại, rồi gửi anh một tấm.',
+  kept: 'Quá xinh đẹp, lưu lại thôi.',
   iosTip: '  (iPhone: bấm Lưu → “Lưu hình ảnh”)',
   stamp1: 'Chip, 21 ✦',
   stamp2: '22 · 10 · 2026  ·  PLANO, TX',
-  stamp3: 'vương miện làm tại Barrie',
+  stamp3: 'vương miện made in Canada',
   freeHintCam: '✋ khuấy   ·   ✊ gom   ·   🤏 pháo hoa   ·   🫶 ?',
   freeHintTap: 'kéo để khuấy   ·   giữ để gom   ·   chạm để bắn pháo hoa',
   freeSqueeze: 'Siết chặt vậy? Để dành tháng Mười Hai.',
@@ -389,17 +390,16 @@ const COPY = {
   ageHintTap: 'chạm để thêm một tuổi',
   ageHintCam: '✊ nắm rồi mở tay · hoặc chạm để thêm một tuổi',
   tapNext: 'chạm để tiếp',
-  camNext: '✊ nắm rồi mở tay · 🤏 chụm · hoặc chạm để tiếp',
-  wishHintCam: '🤏 chụm ngón · hoặc chạm vào bánh để thổi nến',
+  camNext: '✊ nắm rồi ✋ mở tay · hoặc chạm để tiếp',
+  wishHintCam: '✊ nắm rồi ✋ mở tay để thổi nến · hoặc chạm vào bánh',
   letterOpen: 'chạm để mở thư',
   wishA: 'Giờ thổi bánh kem nhé?',
   wishB1: 'Khoan…', wishB2: 'ước một điều trước đã.',
   chName: ['Bé xíu','Đi học','Mới lớn','Bay xa'], chNum: ['I','II','III','IV'],
-  chHint: ['✊ nắm rồi ✋ mở tay','🤏 chụm hai ngón','✌️ giơ hai ngón','✋ xoè tay giữ một nhịp'], chHintEnd: ' để lớn thêm một tuổi · hoặc chạm',
+  chHint: ['✊ nắm rồi ✋ mở tay','✊ nắm rồi ✋ mở tay','✊ nắm rồi ✋ mở tay','✊ nắm rồi ✋ mở tay'], chHintEnd: ' để lớn thêm một tuổi · hoặc chạm',
   hbd21: ['Chúc mừng 21 tuổi', 'Phạm Thị Minh Tú'],
   hbd21P: ['Chúc mừng 21 tuổi', 'Phạm Thị', 'Minh Tú'],
   boothAsk: 'Đội vương miện chụp một tấm nhé?',
-  boothAsk2: 'camera chỉ bật trên máy em, không gửi đi đâu cả.',
   boothYes: '👑 Bật camera', boothNo: 'Bỏ qua',
   giftQ: 'Còn một món quà nữa.',
   skyView: 'Xem ✦', skyViewKey: 'Xem ✦  ·  E', skyClose: 'Đóng ✕', skyEnd: 'Kết thúc ›', skyTour: '✦ tự bay',
@@ -718,12 +718,7 @@ function drawGirl(g,W,H,a,pose,part){
 const LIFE={img:null,p:null,ok:false,R:{kid5:[0,0,291,320],c024:[295,0,124,320],c025:[423,0,140,320],c023:[567,0,159,320],c092:[730,0,125,320],k118:[859,0,125,320],c068:[992,0,242,320],dad:[1238,0,77,320],mom:[1319,0,62,320],twinW:[1385,0,65,320],twinR:[1454,0,75,320]}};
 function lifeLoad(){if(LIFE.p)return LIFE.p;return LIFE.p=(async()=>{const k=await skyKey();const r=await fetch(MEMBASE+'life.bin?v=30');if(!r.ok)throw r.status;
   const b=new Uint8Array(await r.arrayBuffer());const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:b.slice(0,12)},k,b.slice(12));LIFE.img=await createImageBitmap(new Blob([pt],{type:'image/png'}));LIFE.ok=LIFE.img.width>=1529})().catch(()=>{})}
-const LCAP={0:'Thế giới có thêm một người mê ngủ.',1:'Chưa biết đi, nhưng đã biết bỏ chạy.',2:'Bước nào cũng có người nắm tay.',3:'Ngày đầu đi mẫu giáo.',4:'Có hai chị sinh đôi. Ra đường là có vệ sĩ.',
-  5:'Mùa hè ở hồ bơi. Nước bắn lên tới trời.',6:'Vào lớp Một. Cặp to hơn người.',7:'Cả buổi chiều đuổi bướm. Bướm thắng.',8:'Bong bóng xà phòng. Cái nào cũng muốn giữ.',
-  9:'Thả diều. Người cầm dây còn vui hơn diều.',10:'Ảnh cả nhà. Ai cũng cao hơn em, trừ Berry.',11:'Vào cấp Hai, trường Trưng Vương.',12:'Bắt đầu thích ngắm sao.',
-  13:'Tóc dài ra. Chuyện cũng dài ra.',14:'Lớp 9. Tan học là rủ nhau đi ăn vặt.',15:'Vào cấp Ba, FPT. Có thêm một hội bạn thân.',16:'Chở bạn đi vòng vòng Đà Nẵng.',
-  17:'Năm 2023. Có một người tên Ken.',18:'Sang Mỹ. Năm nhất ở Miami.',19:'Chuyển về Texas. Trời rộng, sao nhiều.',20:'Orlando, tháng Bảy. Gần 200 tấm ảnh, vẫn thấy thiếu.',
-  21:'21 tuổi. Năm cuối. Vương miện này là của em.'};
+const LCAP={0:'Em bé',1:'Bò…',2:'Gia đình',3:'Mẫu giáo',4:'2 chị của Chip',5:'Hồ bơi',6:'Lớp Một',7:'Đuổi bướm',8:'Bong bóng',9:'Thả diều',10:'Cả nhà',11:'Trưng Vương',12:'Ngắm sao',13:'Tóc dài',14:'Ăn vặt',15:'FPT',16:'Đà Nẵng',17:'♥',18:'Miami',19:'Texas',20:'Orlando',21:'Công chúa'};
 /* who says what (speech bubbles). [who, text, layer to follow, anchor x, anchor y] — anchors are in the 760×560 stage */
 const LTALK=(()=>{const cx=380,B=543.2;return {
   0:[['berry','Berry trực đêm. Chị Chip cứ ngủ đi.']],
@@ -1286,7 +1281,7 @@ const scenes=[
    if(first)this.aEnd=assemble(ORD.radial,{spread:2.4*TEMPO,travel:2.8*TEMPO,jitter:.3,curl:.2,lift:3,after:'hold',nz:.3})*.8;
    else this.aEnd=assemble(ORD.random,{spread:.35,travel:.95,jitter:.1,curl:.08,lift:1,after:'hold',nz:.3});
    this.lockT=st+this.aEnd+({1:2.6,2:2.8,4:2.6,17:1.4,20:1.4}[a]||0)},
- cap(k){const c=$('agec');if(!c)return;c.classList.add('off');clearTimeout(this.capT);this.capT=setTimeout(()=>{c.textContent=LCAP[k]||'';c.classList.remove('off')},260)},
+ cap(k){const c=$('agec');if(!c)return;c.classList.add('off');clearTimeout(this.capT);this.capT=setTimeout(()=>{c.textContent=LCAP[k]||'';c.classList.toggle('heart',LCAP[k]==='♥');c.classList.remove('off')},260)},
  lightNode(j){const n=this.nodes[j],g=this.cg;if(!n||!g)return;const par=this.nodes[n.p],par2=n.p2!=null?this.nodes[n.p2]:null,t0=performance.now();
    const ds=n.m?36:22;g.drawImage(DOTS[0],n.x-ds/2,n.y-ds/2,ds,ds);g.fillStyle='#fff';g.beginPath();g.arc(n.x,n.y,n.m?2.6:1.6,0,7);g.fill();
    const lines=[par,par2].filter(Boolean);if(!lines.length)return;
@@ -1312,7 +1307,6 @@ const scenes=[
    if(this.lay&&this.st!=='silent'){const t=st-this.t0,s=this.sc;for(const L of this.lay){const m=lifeMot(this.k,L.id,t,this.aEnd);L.dx=m[0]*s;L.dy=-m[1]*s;L.c=Math.cos(m[2]);L.sn=Math.sin(m[2]);L.s=m[3]}
      for(let i=0;i<N;i++){const g=lgrp[i];if(g<0)continue;const L=this.lay[g],j=i*3,X=(lbase[j]-L.px)*L.s,Y=(lbase[j+1]-L.py)*L.s;tgt[j]=L.px+X*L.c+Y*L.sn+L.dx;tgt[j+1]=L.py-X*L.sn+Y*L.c+L.dy}}},
  tap(){if(this.locked())return;if(this.st==='years')this.step();else if(this.st==='peak')this.silence()},
- pinch(){this.tap()},wave(){this.tap()},peace(){this.tap()},palm(){this.tap()},
  release(h){if(h===null)return;if(!h||h.cam)this.tap()},
  nextOverride(){this.tap();return true}},
 
@@ -1368,7 +1362,7 @@ const scenes=[
    if(this.nm==='heart'||this.nm==='berry'){const sc=1+.075*beatF(st),hc=this.nm==='berry'?this.hc:[0,0];
      for(let i=0;i<NI;i++){if(this.nm==='berry'&&lgrp[i]!==1)continue;const j=i*3;tgt[j]=cx+hc[0]+(offB[j]-hc[0])*sc;tgt[j+1]=cy+hc[1]+(offB[j+1]-hc[1])*sc}}
    if(this.nm==='house'){const f=.85+.25*Math.sin(st*5.3)*Math.sin(st*2.1+1);for(let i=0;i<NI;i++)if(lgrp[i]===2){const j=i*3;tcol[j]=Math.min(1,gC[j]*f*1.15);tcol[j+1]=Math.min(1,gC[j+1]*f*1.1);tcol[j+2]=gC[j+2]*f}}},
- tap(){this.adv()},palm(){this.adv()},pinch(){this.adv()},wave(){this.adv()},peace(){this.adv()},release(h){if(h!==null)this.adv()},
+ tap(){this.adv()},release(h){if(h!==null)this.adv()},
  nextOverride(){this.adv();return true},
  exit(){sfx.duck(false)}},
 
@@ -1407,7 +1401,7 @@ const scenes=[
    const bend=Math.max(0,Math.min(1,(lv-mic.base*1.5)/.12));document.querySelectorAll('.flame:not(.out)').forEach((f,k)=>{f.style.rotate=(bend*(k%2?-24:24))+'deg';f.style.scale=`${1+bend*.25} ${1-bend*.4}`});
    if(lv>Math.max(.085,mic.base*4)){mic.hold+=dt;if(mic.hold>.16)this.blow()}else mic.hold=0},
  tap(){if(this.locked())return;if(this.ph==='lines')this.toCake();else if(this.lit&&!this.over)this.blow();else if(this.canNext)next()},
- pinch(){this.tap()},palm(){this.tap()},wave(){this.tap()},peace(){this.tap()},release(h){if(h!==null)this.tap()},
+ release(h){if(h!==null)this.tap()},
  nextOverride(){if(this.canNext)return false;this.tap();return true},
  exit(){FW.stop();$('flames').innerHTML='';const mb=$('micb');if(mb)mb.remove();sfx.duck(false)}},
 
@@ -1416,7 +1410,7 @@ const scenes=[
    dust();assemble(ORD.random,{spread:1.2*TEMPO,travel:2.4*TEMPO,lift:-4,after:'drift'});
    if(stream&&stream.active&&video.readyState>=2){this.start();return}
    for(let i=0;i<N*3;i++)tcol[i]*=.45;
-   $('M').innerHTML=`<div class="ask"><div class="line show">${COPY.boothAsk}</div><div class="line sm show">${COPY.boothAsk2}</div><div class="row"><button class="pill big" id="bYes">${COPY.boothYes}</button><button class="pill" id="bNo">${COPY.boothNo}</button></div></div>`;
+   $('M').innerHTML=`<div class="ask"><div class="line show">${COPY.boothAsk}</div><div class="row"><button class="pill big" id="bYes">${COPY.boothYes}</button><button class="pill" id="bNo">${COPY.boothNo}</button></div></div>`;
    $('bYes').onclick=async e=>{e.stopPropagation();const b=$('bYes');b.textContent='đang mở…';b.disabled=true;const ok=await startVideo();if(S!==this)return;
      if(ok){this.own=!camOn;$('M').innerHTML='';this.start()}else{$('M').innerHTML='';say('',COPY.stNoCam);later(2600,()=>this.leave())}};
    $('bNo').onclick=e=>{e.stopPropagation();this.leave()}},
@@ -1466,7 +1460,7 @@ const scenes=[
  locked(){return this.opened||st<2.8},
  autoDwell(){return this.locked()?0:3.5},
  auto(){this.open()},
- pinch(){if(!this.locked())this.open()},fist(){if(!this.locked())this.open()},tap(){if(!this.locked())this.open()},palm(){this.tap()},wave(){this.tap()},peace(){this.tap()},
+ tap(){if(!this.locked())this.open()},release(h){if(h!==null&&!this.locked())this.open()},
  nextOverride(){if(!this.opened&&!this.locked())this.open();return true}},
 
 {name:'sky',noCursor:true,
